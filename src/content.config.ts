@@ -12,6 +12,7 @@ const projects = defineCollection({
     githubUrl: z.string().url('Invalid GitHub URL').optional(),
     youtubeId: z.string().optional(),
     thumbnailImage: z.string({ required_error: 'Thumbnail image path is required' }),
+    previewVideo: z.string().optional(),
     screenshots: z.array(z.string()).optional().default([]),
     featured: z.boolean().optional().default(false),
     order: z.number().optional().default(999),
