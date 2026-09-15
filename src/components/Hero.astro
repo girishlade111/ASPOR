@@ -1,6 +1,8 @@
 ---
 // Hero.astro - Fullscreen Cinematic Video Hero with GSAP SplitText Reveal
+import { Image } from 'astro:assets';
 import CinematicOverlay from './CinematicOverlay.astro';
+import heroPoster from '../assets/hero-poster.jpg';
 ---
 
 <section 
@@ -10,12 +12,18 @@ import CinematicOverlay from './CinematicOverlay.astro';
   <!-- Background Video & Fallback Poster Container -->
   <div class="absolute inset-0 w-full h-full overflow-hidden bg-[#08090b]">
     <!-- Instant Poster Frame (Renders immediately without network delay) -->
-    <img 
-      src="/assets/hero/poster.jpg" 
-      alt="Cinematic Hero Backdrop" 
-      class="hero-poster absolute inset-0 w-full h-full object-cover object-center scale-105 transition-opacity duration-1000 filter grayscale-[50%] contrast-[115%] brightness-[45%]"
+    <!-- Optimized responsive LCP image: AVIF/WebP srcset, explicit dimensions prevent CLS -->
+    <Image
+      src={heroPoster}
+      alt="Cinematic Hero Backdrop"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      quality={72}
       loading="eager"
       fetchpriority="high"
+      decoding="async"
+      class="hero-poster absolute inset-0 w-full h-full object-cover object-center scale-105 transition-opacity duration-1000 filter grayscale-[50%] contrast-[115%] brightness-[45%]"
     />
 
     <!-- Fullscreen Video Element with Cinematic Color Grade -->

@@ -2,6 +2,7 @@
 // work.astro - Cinematic Projects Index Grid with Hover Video Previews
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CinematicOverlay from '../components/CinematicOverlay.astro';
+import { Image } from 'astro:assets';
 import { getAllProjects } from '../utils/projects';
 
 const projects = await getAllProjects();
@@ -101,12 +102,17 @@ const projects = await getAllProjects();
                   class="project-flip-thumb relative w-full h-full"
                   data-flip-id={`thumb-${project.data.slug}`}
                 >
-                  <!-- Base High-Res Thumbnail Image -->
-                  <img 
-                    src={project.data.thumbnailImage} 
+                  <!-- Optimized Thumbnail: responsive AVIF/WebP, explicit dimensions (no CLS) -->
+                  <Image
+                    src={project.data.thumbnailImage}
                     alt={project.data.title}
-                    class="project-thumb-img w-full h-full object-cover object-center filter grayscale-[30%] contrast-[115%] brightness-[85%] transition-all duration-700 group-hover:filter-none"
+                    widths={[400, 800]}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 400px"
+                    formats={['avif', 'webp']}
+                    quality={68}
                     loading="lazy"
+                    decoding="async"
+                    class="project-thumb-img w-full h-full object-cover object-center filter grayscale-[30%] contrast-[115%] brightness-[85%] transition-all duration-700 group-hover:filter-none"
                   />
 
                   <!-- Hover Looping Video Element (if available) -->

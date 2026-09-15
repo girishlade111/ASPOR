@@ -218,12 +218,14 @@ const isHeavy = intensity === 'heavy';
   }
 
   /* Layer 3: GPU-cheap Monochromatic Animated Film Grain */
+  /* Perf: 130% overscan (was 200%) — still covers the ±2% jitter travel with margin,
+     but blends ~2.4x fewer pixels per frame under mix-blend-mode: overlay. */
   .cinematic-grain-layer {
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: -15%;
+    left: -15%;
+    width: 130%;
+    height: 130%;
     /* Monochromatic fractal noise texture with desaturation matrix */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
     background-repeat: repeat;
@@ -260,6 +262,14 @@ const isHeavy = intensity === 'heavy';
     }
   }
 
+  /* Paused state (toggled by the observer script below when the overlay is
+     off-screen or the tab is hidden) — freezes compositing work to zero while
+     keeping every layer mounted, so visuals resume instantly with no reflow. */
+  .cinematic-paused .cinematic-leak,
+  .cinematic-paused .cinematic-grain-layer {
+    animation-play-state: paused !important;
+  }
+
   /* Reduced Motion Accessibility */
   @media (prefers-reduced-motion: reduce) {
     .cinematic-leak {
@@ -270,3 +280,43 @@ const isHeavy = intensity === 'heavy';
     }
   }
 </style>
+
+<script>
+  // Perf: pause the grain + light-leak compositing work whenever ALL overlay
+  // instances are off-screen (absolute-positioned, scrolled past) or the tab is
+  // hidden. Layers stay mounted — visuals resume instantly, zero reflow, zero
+  // feature loss. Fixed-position overlays are always intersecting, so they only
+  // pause on tab-hide (correct: they are always visible otherwise).
+  const overlays = document.querySelectorAll('[data-cinematic-overlay]');
+
+  function refreshOverlayPause() {
+    const shouldPause =
+      document.hidden ||
+      (overlays.length > 0 &&
+        Array.from(overlays).every((el) => {
+          const rect = el.getBoundingClientRect();
+          return (
+            rect.bottom <= 0 ||
+            rect.top >= window.innerHeight ||
+            rect.right <= 0 ||
+            rect.left >= window.innerWidth
+          );
+        }));
+    overlays.forEach((el) => el.classList.toggle('cinematic-paused', shouldPause));
+  }
+
+  let refreshQueued = false;
+  function queueRefresh() {
+    if (refreshQueued) return;
+    refreshQueued = true;
+    requestAnimationFrame(() => {
+      refreshQueued = false;
+      refreshOverlayPause();
+    });
+  }
+
+  document.addEventListener('visibilitychange', refreshOverlayPause);
+  window.addEventListener('scroll', queueRefresh, { passive: true });
+  window.addEventListener('resize', queueRefresh);
+  refreshOverlayPause();
+</script>

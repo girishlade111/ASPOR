@@ -2,6 +2,10 @@
 // about.astro - Scroll-Scrubbed Cinematic Documentary Narrative
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CinematicOverlay from '../components/CinematicOverlay.astro';
+import { Image } from 'astro:assets';
+import scene01Precision from '../assets/scene-01-precision.jpg';
+import scene02Craft from '../assets/scene-02-craft.jpg';
+import scene03Ladestack from '../assets/scene-03-ladestack.jpg';
 
 const scenes = [
   {
@@ -15,7 +19,7 @@ const scenes = [
       "That physical rigor fundamentally shaped how I architect software systems: resilient under extreme load, deliberately constrained, and structurally deterministic from first principles."
     ],
     badge: "FOUNDATION // MECHANICAL ENG",
-    image: "/assets/about/scene-01-precision.jpg",
+    image: scene01Precision,
     alt: "Mechanical engineering lathe gears and titanium machining",
     telemetry: {
       focal: "50MM T1.5",
@@ -35,7 +39,7 @@ const scenes = [
       "I traded lathes for TypeScript, Rust, and high-throughput web runtimes. My focus shifted from mechanical friction to runtime latency, memory layout, and bulletproof developer ergonomics."
     ],
     badge: "PIVOT // SOFTWARE SYSTEMS",
-    image: "/assets/about/scene-02-craft.jpg",
+    image: scene02Craft,
     alt: "Software engineer workstation with terminal code and mechanical calipers",
     telemetry: {
       focal: "35MM T1.4",
@@ -55,7 +59,7 @@ const scenes = [
       "When you operate solo, there is no handoff margin. Product intuition, system telemetry, automated regression pipelines, and performance budgets all rest on your engineering execution."
     ],
     badge: "VENTURE // FOUNDER @ LADESTACK",
-    image: "/assets/about/scene-03-ladestack.jpg",
+    image: scene03Ladestack,
     alt: "Cinematic atmospheric server hardware and developer tooling backdrop",
     telemetry: {
       focal: "85MM T1.8",
@@ -75,7 +79,7 @@ const scenes = [
       "Whether developing resilient distributed backends, developer infrastructure platforms, or high-touch interactive web experiences, I bring extreme ownership, speed of execution, and an obsession with craftsmanship."
     ],
     badge: "TARGET // PRODUCT COMPANIES",
-    image: "/assets/about/scene-01-precision.jpg",
+    image: scene01Precision,
     alt: "Mechanical engineering precision background representing relentless standards",
     telemetry: {
       focal: "28MM T2.0",
@@ -136,11 +140,19 @@ const scenes = [
         >
           <!-- Parallax Background Image Container -->
           <div class="scene-bg-container absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-            <img 
-              src={scene.image} 
-              alt={scene.alt} 
+            {/* Scene 1 is near-top so it can be the LCP element: eager + high priority.
+                Astro Image emits width/height + responsive AVIF/WebP srcset (fixes CLS). */}
+            <Image
+              src={scene.image}
+              alt={scene.alt}
+              widths={[768, 1280]}
+              sizes="100vw"
+              formats={['avif', 'webp']}
+              quality={70}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchpriority={index === 0 ? 'high' : 'auto'}
+              decoding="async"
               class="scene-bg-layer absolute -inset-y-[25%] inset-x-0 w-full h-[150%] object-cover object-center filter grayscale-[50%] contrast-[120%] brightness-[44%] scale-105"
-              loading="lazy"
             />
             <!-- Dark Film Scrims: Balanced for high contrast readability while keeping visual depth -->
             <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/60 to-[#08090b]/85 pointer-events-none"></div>
