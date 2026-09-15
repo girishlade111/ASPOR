@@ -1,0 +1,527 @@
+---
+// src/pages/work/[slug].astro - Dynamic Project Case Study Template
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CinematicOverlay from '../../components/CinematicOverlay.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const {
+  title,
+  slug,
+  summary,
+  tags,
+  githubUrl,
+  youtubeId,
+  thumbnailImage,
+  screenshots = [],
+  order = 999,
+} = project.data;
+
+// Clean up youtubeId in case full URL was passed or raw ID
+const cleanYoutubeId = youtubeId ? youtubeId.replace(/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)/, '').split(/[^a-zA-Z0-9_-]/)[0] : null;
+
+// Determine if optional sections should be rendered
+const hasVideo = Boolean(cleanYoutubeId && cleanYoutubeId.trim().length > 0);
+const hasScreenshots = Boolean(screenshots && Array.isArray(screenshots) && screenshots.length > 0);
+const hasGithub = Boolean(githubUrl && githubUrl.trim().length > 0);
+---
+
+<BaseLayout 
+  title={`${title} — Case Study | Girish Lade`}
+  description={summary}
+>
+  <!-- Global Fixed Cinematic Visual Effects Overlay (Light intensity for maximum reading focus) -->
+  <CinematicOverlay intensity="light" position="fixed" />
+
+  <article class="case-study-page relative w-full min-h-[calc(100vh-56px)] bg-[#08090b] text-[#f8fafc] px-4 sm:px-8 py-10 sm:py-16">
+    
+    <div class="max-w-5xl mx-auto">
+      
+      <!-- Top Navigation & Breadcrumb HUD Bar -->
+      <nav class="flex flex-wrap items-center justify-between gap-4 mb-8 sm:mb-12 pt-4">
+        <!-- Back to Work Button -->
+        <a 
+          href="/work" 
+          class="group inline-flex items-center gap-2.5 px-4 py-2 rounded-lg border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-amber-400/40 text-zinc-300 hover:text-white font-mono text-xs tracking-wider transition-all duration-300 shadow-sm"
+          aria-label="Return to Work archives"
+        >
+          <svg class="w-4 h-4 text-amber-400 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>BACK TO WORK</span>
+        </a>
+
+        <!-- Telemetry Index Badge -->
+        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="font-mono text-[11px] tracking-widest text-zinc-400 uppercase">
+            CASE STUDY // ARCHIVE_{order.toString().padStart(2, '0')}
+          </span>
+          <span class="text-zinc-600">|</span>
+          <span class="font-mono text-[11px] tracking-wider text-amber-300 font-semibold">
+            {slug.toUpperCase()}
+          </span>
+        </div>
+      </nav>
+
+      <!-- Project Header Section -->
+      <header class="mb-12 sm:mb-16 border-b border-white/[0.08] pb-10">
+        
+        <!-- Tech Stack Tags -->
+        <div class="flex flex-wrap items-center gap-2 mb-4 font-mono text-xs tracking-wider">
+          {tags.map((tag) => (
+            <span class="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-amber-300 font-medium">
+              [{tag.toUpperCase()}]
+            </span>
+          ))}
+        </div>
+
+        <!-- Project Title -->
+        <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight text-white leading-[1.1] mb-6">
+          {title}
+        </h1>
+
+        <!-- Summary Lead Paragraph -->
+        <p class="font-sans font-light text-zinc-300 text-base sm:text-lg md:text-xl leading-relaxed max-w-4xl mb-8 text-balance">
+          {summary}
+        </p>
+
+        <!-- Header Action & Telemetry Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/[0.05]">
+          <!-- Action Buttons (HUD Style) -->
+          <div class="flex flex-wrap items-center gap-3">
+            {hasGithub && (
+              <a 
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-6 py-3 rounded bg-white text-zinc-950 hover:bg-amber-300 hover:text-black font-heading font-semibold text-xs sm:text-sm tracking-wider transition-all duration-300 flex items-center gap-2.5 group shadow-lg shadow-white/5"
+              >
+                <span>VIEW ON GITHUB</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            )}
+
+            <a 
+              href="/work" 
+              class="px-5 py-3 rounded bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/10 hover:border-white/20 font-mono text-xs tracking-wider transition-all duration-300 flex items-center gap-2"
+            >
+              <span>[← ALL ARCHIVES]</span>
+            </a>
+          </div>
+
+          <!-- Metadata Telemetry Pill -->
+          <div class="flex items-center gap-3 font-mono text-[11px] text-zinc-500 bg-black/40 px-3.5 py-2 rounded border border-white/5 backdrop-blur-sm">
+            <span class="text-amber-400 font-bold">[+]</span>
+            <span>SYSTEM: PRODUCTION</span>
+            <span class="text-zinc-700">|</span>
+            <span>SPEC: 2026</span>
+          </div>
+        </div>
+
+      </header>
+
+      <!-- Conditionally Rendered: YouTube Video Walkthrough Embed -->
+      {hasVideo && (
+        <section class="mb-14 sm:mb-20" aria-label="Project Video Walkthrough">
+          <div class="relative bg-[#0d0f14]/90 border border-white/15 rounded-2xl overflow-hidden shadow-2xl shadow-black/80">
+            <!-- Video Container Header HUD Bar -->
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-white/[0.02] font-mono text-xs tracking-wider text-zinc-400">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span class="text-zinc-200 font-semibold tracking-widest">VIDEO TELEMETRY // NOCDON FEED</span>
+              </div>
+              <div class="flex items-center gap-2 text-zinc-500 text-[11px] hidden sm:flex">
+                <span>YOUTUBE-NOCOOKIE EMBED</span>
+                <span class="text-zinc-700">|</span>
+                <span class="text-amber-400">1080P 60FPS</span>
+              </div>
+            </div>
+
+            <!-- Responsive 16:9 Video Wrapper -->
+            <div class="relative w-full aspect-video bg-black">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${cleanYoutubeId}?rel=0&modestbranding=1`}
+                title={`${title} Video Walkthrough`}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                class="absolute inset-0 w-full h-full border-0"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- MDX Body Content (Writeup) -->
+      <section class="case-study-writeup mb-16 sm:mb-24">
+        <div class="prose-cinematic max-w-none">
+          <Content />
+        </div>
+      </section>
+
+      <!-- Conditionally Rendered: Screenshots Gallery -->
+      {hasScreenshots && (
+        <section class="screenshots-section mb-16 sm:mb-24 border-t border-white/10 pt-12 sm:pt-16" aria-label="Screenshots Gallery">
+          <!-- Gallery Section Header -->
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+              <div class="flex items-center gap-2 font-mono text-xs text-amber-400 tracking-wider mb-2">
+                <span class="font-bold">[+]</span>
+                <span>INTERFACE ARCHIVES & TELEMETRY</span>
+              </div>
+              <h2 class="font-display font-bold text-2xl sm:text-3xl uppercase tracking-tight text-white">
+                SYSTEM SCREENSHOTS.
+              </h2>
+            </div>
+            <div class="font-mono text-xs text-zinc-500 tracking-wider">
+              <span>{screenshots.length} {screenshots.length === 1 ? 'FRAME' : 'FRAMES'} INDEXED &bull; CLICK TO INSPECT</span>
+            </div>
+          </div>
+
+          <!-- Screenshots Responsive Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {screenshots.map((imgSrc, idx) => (
+              <figure 
+                class="screenshot-item group relative bg-[#0d0f14] border border-white/10 hover:border-amber-400/50 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 shadow-xl"
+                data-lightbox-trigger
+                data-img-src={imgSrc}
+                data-img-alt={`${title} screenshot ${idx + 1}`}
+              >
+                <div class="aspect-video w-full overflow-hidden bg-black relative">
+                  <img 
+                    src={imgSrc} 
+                    alt={`${title} screenshot ${idx + 1}`} 
+                    class="w-full h-full object-cover object-center filter grayscale-[20%] contrast-[110%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                    loading="lazy"
+                  />
+                  <!-- Gradient Overlay -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-20 transition-opacity"></div>
+                  
+                  <!-- Hover Reticle Icon -->
+                  <div class="absolute bottom-3 right-3 px-2.5 py-1 rounded bg-black/80 border border-white/20 text-zinc-300 font-mono text-[10px] tracking-wider flex items-center gap-1.5 opacity-80 group-hover:opacity-100 group-hover:border-amber-400/60 group-hover:text-amber-300 transition-all">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                    <span>INSPECT [35MM]</span>
+                  </div>
+                </div>
+
+                <figcaption class="px-4 py-2.5 bg-white/[0.02] border-t border-white/[0.06] font-mono text-[11px] text-zinc-400 flex items-center justify-between">
+                  <span>FRAME 0{idx + 1} // TELEMETRY CAPTURE</span>
+                  <span class="text-amber-400/80">HIGH-RES</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Bottom Page Navigation & Footer CTA -->
+      <footer class="border-t border-white/10 pt-10 pb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <a 
+          href="/work" 
+          class="group inline-flex items-center gap-3 text-sm font-mono text-zinc-400 hover:text-white transition-colors"
+        >
+          <svg class="w-4 h-4 text-amber-400 transform group-hover:-translate-x-1.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span class="tracking-wider">RETURN TO ALL ARCHIVED WORK</span>
+        </a>
+
+        {hasGithub && (
+          <a 
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-5 py-2.5 rounded border border-white/15 hover:border-amber-400/50 bg-white/[0.04] hover:bg-white/[0.08] text-white font-mono text-xs tracking-wider transition-all flex items-center gap-2 group"
+          >
+            <span>VIEW REPOSITORY ON GITHUB</span>
+            <svg class="w-3.5 h-3.5 text-zinc-400 group-hover:text-amber-400 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        )}
+      </footer>
+
+    </div>
+
+  </article>
+
+  <!-- Lightweight GSAP Lightbox Modal for Screenshots -->
+  <div 
+    id="screenshot-lightbox" 
+    class="fixed inset-0 z-[99999] bg-black/92 backdrop-blur-xl flex flex-col items-center justify-center p-4 sm:p-8 opacity-0 pointer-events-none transition-opacity duration-300 select-none"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image inspection viewer"
+  >
+    <!-- Top Modal Controls -->
+    <div class="absolute top-6 left-6 right-6 flex items-center justify-between font-mono text-xs text-zinc-400 z-10">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+        <span id="lightbox-caption" class="text-zinc-200">INSPECTING TELEMETRY FRAME</span>
+      </div>
+
+      <button 
+        id="lightbox-close-btn"
+        type="button"
+        class="px-4 py-2 rounded bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-xs tracking-wider transition-colors flex items-center gap-2 cursor-pointer"
+        aria-label="Close image inspector"
+      >
+        <span>[ESC / CLOSE]</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Lightbox Image Wrapper -->
+    <div class="relative max-w-6xl max-h-[85vh] w-full flex items-center justify-center overflow-hidden">
+      <img 
+        id="lightbox-img" 
+        src="" 
+        alt="" 
+        class="max-w-full max-h-[82vh] object-contain rounded-lg border border-white/15 shadow-2xl shadow-black scale-95 transition-transform duration-300"
+      />
+    </div>
+
+    <!-- Bottom Indicator -->
+    <div class="absolute bottom-6 font-mono text-[11px] text-zinc-500 tracking-widest">
+      CLICK ANYWHERE OUTSIDE OR PRESS ESC TO DISMISS
+    </div>
+  </div>
+
+</BaseLayout>
+
+<style>
+  /* Rich Prose Styling for MDX Writeup Content matching Cinematic Aesthetic */
+  .prose-cinematic {
+    color: #cbd5e1;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .prose-cinematic :global(h1) {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 1.25;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .prose-cinematic :global(h2) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: #f8fafc;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .prose-cinematic :global(h2)::before {
+    content: '[+]';
+    color: #e5a93c;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .prose-cinematic :global(h3) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: #e2e8f0;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose-cinematic :global(p) {
+    margin-bottom: 1.5rem;
+    color: #cbd5e1;
+    font-weight: 300;
+  }
+
+  .prose-cinematic :global(strong) {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .prose-cinematic :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.75rem;
+    space-y: 0.75rem;
+  }
+
+  .prose-cinematic :global(li) {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: #cbd5e1;
+  }
+
+  .prose-cinematic :global(li)::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #e5a93c;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  .prose-cinematic :global(code) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875em;
+    padding: 0.15em 0.4em;
+    border-radius: 0.25rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fde047;
+  }
+
+  .prose-cinematic :global(pre) {
+    background-color: #0d0f14 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin-bottom: 1.75rem;
+    overflow-x: auto;
+  }
+
+  .prose-cinematic :global(pre code) {
+    background-color: transparent !important;
+    border: none;
+    padding: 0;
+    color: #f8fafc;
+  }
+
+  .prose-cinematic :global(blockquote) {
+    border-left: 3px solid #e5a93c;
+    background-color: rgba(229, 169, 60, 0.04);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 1.75rem 0;
+    font-style: italic;
+    color: #e2e8f0;
+  }
+</style>
+
+<!-- Client Script: GSAP Smooth Click-To-Enlarge Lightbox for Screenshots -->
+<script>
+  import { gsap } from 'gsap';
+
+  function initLightbox() {
+    const lightbox = document.getElementById('screenshot-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = document.getElementById('lightbox-close-btn');
+    const triggers = document.querySelectorAll('[data-lightbox-trigger]');
+
+    if (!lightbox || !lightboxImg) return;
+
+    function openLightbox(src: string, alt: string) {
+      lightboxImg!.src = src;
+      lightboxImg!.alt = alt;
+      if (lightboxCaption) {
+        lightboxCaption.textContent = alt || 'INSPECTING TELEMETRY FRAME';
+      }
+
+      lightbox.setAttribute('aria-hidden', 'false');
+      lightbox.classList.remove('pointer-events-none');
+
+      gsap.to(lightbox, {
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+
+      gsap.fromTo(
+        lightboxImg,
+        { scale: 0.92, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.4)' }
+      );
+    }
+
+    function closeLightbox() {
+      gsap.to(lightbox, {
+        opacity: 0,
+        duration: 0.25,
+        ease: 'power2.in',
+        onComplete: () => {
+          lightbox.setAttribute('aria-hidden', 'true');
+          lightbox.classList.add('pointer-events-none');
+          if (lightboxImg) lightboxImg.src = '';
+        },
+      });
+    }
+
+    // Attach click listeners to screenshot triggers
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const src = trigger.getAttribute('data-img-src') || '';
+        const alt = trigger.getAttribute('data-img-alt') || '';
+        if (src) {
+          openLightbox(src, alt);
+        }
+      });
+    });
+
+    // Close on button click
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      });
+    }
+
+    // Close on backdrop click
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || (e.target as HTMLElement).closest('#lightbox-close-btn')) {
+        closeLightbox();
+      }
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.getAttribute('aria-hidden') === 'false') {
+        closeLightbox();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLightbox);
+  } else {
+    initLightbox();
+  }
+
+  document.addEventListener('astro:page-load', initLightbox);
+</script>
