@@ -1,0 +1,363 @@
+---
+// about.astro - Scroll-Scrubbed Cinematic Documentary Narrative
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CinematicOverlay from '../components/CinematicOverlay.astro';
+
+const scenes = [
+  {
+    id: "scene-01",
+    logNumber: "LOG 02 // SCENE 01",
+    phase: "ORIGIN STORY",
+    subtitle: "CALIBRATION: ±0.005MM // PHYSICAL RIGOR & TOLERANCES",
+    title: "MECHANICAL PRECISION & STRUCTURAL TOLERANCE",
+    narrative: [
+      "Trained as a mechanical engineer, my foundation was forged in finite element stress simulations, kinematic analysis, and sub-millimeter manufacturing tolerances. In physical mechanical engineering, failure is never caught by a compiler—it fails catastrophically in sheared steel and fractured aluminum.",
+      "That physical rigor fundamentally shaped how I architect software systems: resilient under extreme load, deliberately constrained, and structurally deterministic from first principles."
+    ],
+    badge: "FOUNDATION // MECHANICAL ENG",
+    image: "/assets/about/scene-01-precision.jpg",
+    alt: "Mechanical engineering lathe gears and titanium machining",
+    telemetry: {
+      focal: "50MM T1.5",
+      iso: "800",
+      shutter: "1/48",
+      timecode: "00:01:14:08"
+    }
+  },
+  {
+    id: "scene-02",
+    logNumber: "LOG 02 // SCENE 02",
+    phase: "SYSTEMS PIVOT",
+    subtitle: "TRANSITION: ATOMS TO BITS // REACTIVE STATE & RUNTIMES",
+    title: "FROM PHYSICAL KINEMATICS TO DISTRIBUTED STATE",
+    narrative: [
+      "Transitioning into software engineering was not an abandonment of mechanical principles—it was an amplification. The state transitions that govern an automated CNC manufacturing cell mirror the distributed concurrency models of modern distributed software.",
+      "I traded lathes for TypeScript, Rust, and high-throughput web runtimes. My focus shifted from mechanical friction to runtime latency, memory layout, and bulletproof developer ergonomics."
+    ],
+    badge: "PIVOT // SOFTWARE SYSTEMS",
+    image: "/assets/about/scene-02-craft.jpg",
+    alt: "Software engineer workstation with terminal code and mechanical calipers",
+    telemetry: {
+      focal: "35MM T1.4",
+      iso: "640",
+      shutter: "1/48",
+      timecode: "00:03:42:19"
+    }
+  },
+  {
+    id: "scene-03",
+    logNumber: "LOG 02 // SCENE 03",
+    phase: "SOLO VENTURE",
+    subtitle: "AUTONOMOUS ARCHITECTURE // FOUNDER @ LADESTACK",
+    title: "LADESTACK: ZERO-COMPROMISE DEVELOPER TOOLING",
+    narrative: [
+      "As the solo founder of LadeStack, I architect end-to-end software tools from raw problem definition to production shipping. Building developer utilities, cognitive memory engines, and autonomous task runners taught me relentless full-lifecycle accountability.",
+      "When you operate solo, there is no handoff margin. Product intuition, system telemetry, automated regression pipelines, and performance budgets all rest on your engineering execution."
+    ],
+    badge: "VENTURE // FOUNDER @ LADESTACK",
+    image: "/assets/about/scene-03-ladestack.jpg",
+    alt: "Cinematic atmospheric server hardware and developer tooling backdrop",
+    telemetry: {
+      focal: "85MM T1.8",
+      iso: "1250",
+      shutter: "1/48",
+      timecode: "00:07:18:02"
+    }
+  },
+  {
+    id: "scene-04",
+    logNumber: "LOG 02 // SCENE 04",
+    phase: "TARGET HORIZON",
+    subtitle: "OBJECTIVE: TIER-ONE PRODUCT COMPANIES // GLOBAL SCALE",
+    title: "HIGH-IMPACT ENGINEERING FOR TIER-ONE TEAMS",
+    narrative: [
+      "My career horizon is laser-focused on joining high-velocity product engineering companies where physical-grade discipline meets audacious software ambition.",
+      "Whether developing resilient distributed backends, developer infrastructure platforms, or high-touch interactive web experiences, I bring extreme ownership, speed of execution, and an obsession with craftsmanship."
+    ],
+    badge: "TARGET // PRODUCT COMPANIES",
+    image: "/assets/about/scene-01-precision.jpg",
+    alt: "Mechanical engineering precision background representing relentless standards",
+    telemetry: {
+      focal: "28MM T2.0",
+      iso: "400",
+      shutter: "1/48",
+      timecode: "00:10:00:00"
+    }
+  }
+];
+---
+
+<BaseLayout 
+  title="About Girish Lade — Documentary Narrative & Systems Engineering"
+  description="Scroll-scrubbed documentary narrative of Girish Lade: mechanical engineer transitioning to software systems, solo founder of LadeStack, targeting product companies."
+>
+  <!-- Global Fixed Cinematic Visual Effects Overlay -->
+  <CinematicOverlay intensity="heavy" position="fixed" />
+
+  <div class="about-documentary-container relative w-full overflow-hidden bg-[#08090b] text-[#f8fafc]">
+    
+    <!-- Hero Sequence Intro Banner -->
+    <header class="relative z-20 min-h-[50vh] flex flex-col items-center justify-center text-center px-4 sm:px-8 pt-16 pb-12">
+      <!-- Camera HUD Header Strip -->
+      <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-6">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="font-mono text-xs tracking-widest text-zinc-300 uppercase">
+          REEL ARCHIVE // ARCHIVAL FOOTAGE
+        </span>
+        <span class="text-zinc-600">|</span>
+        <span class="font-mono text-xs tracking-wider text-amber-300 font-semibold">
+          LOG 02
+        </span>
+      </div>
+
+      <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight text-white max-w-4xl mx-auto leading-tight mb-4">
+        THE DOCUMENTARY <span class="text-amber-400">NARRATIVE.</span>
+      </h1>
+
+      <p class="font-sans font-light text-zinc-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6">
+        A chronological breakdown of physical engineering principles translated into modern distributed software craft.
+      </p>
+
+      <div class="flex items-center gap-3 font-mono text-[11px] text-zinc-500 tracking-widest uppercase">
+        <span class="text-amber-400/90 font-semibold">[+]</span>
+        <span>SCROLL TO SCRUB TIMELINE</span>
+        <span class="text-zinc-700">&bull;</span>
+        <span>4 SCENES RECORDED</span>
+      </div>
+    </header>
+
+    <!-- Documentary Scenes Reel -->
+    <main class="relative z-20 flex flex-col">
+      {scenes.map((scene, index) => (
+        <section 
+          id={scene.id} 
+          class="scene-section relative min-h-[100vh] flex items-center justify-center px-4 sm:px-8 py-20 overflow-hidden border-t border-white/[0.05]"
+          data-scene-index={index}
+        >
+          <!-- Parallax Background Image Container -->
+          <div class="scene-bg-container absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            <img 
+              src={scene.image} 
+              alt={scene.alt} 
+              class="scene-bg-layer absolute -inset-y-[20%] inset-x-0 w-full h-[140%] object-cover object-center filter grayscale-[65%] contrast-[130%] brightness-[28%] scale-105"
+              loading="lazy"
+            />
+            <!-- Dark Film Scrims -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/80 to-[#08090b] pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.25)_0%,rgba(8,9,11,0.85)_75%,#08090b_100%)] pointer-events-none"></div>
+          </div>
+
+          <!-- Viewfinder HUD Reticle Overlay for Scene -->
+          <div class="absolute inset-6 sm:inset-10 pointer-events-none z-10 flex flex-col justify-between" aria-hidden="true">
+            <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs text-zinc-500 tracking-wider">
+              <div class="flex items-center gap-2">
+                <span class="text-amber-400 font-semibold">[+]</span>
+                <span>{scene.logNumber}</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-3 text-zinc-600">
+                <span>LENS: {scene.telemetry.focal}</span>
+                <span>&bull;</span>
+                <span>EXP: {scene.telemetry.shutter}</span>
+              </div>
+              <div class="flex items-center gap-2 text-zinc-400">
+                <span>ISO {scene.telemetry.iso}</span>
+                <span class="text-amber-400 font-semibold">[+]</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs text-zinc-600 tracking-wider">
+              <span>{scene.phase}</span>
+              <span class="font-mono text-amber-400/90">{scene.telemetry.timecode}</span>
+            </div>
+          </div>
+
+          <!-- Foreground Scrubbed Content Card -->
+          <div class="scene-text-card relative z-20 max-w-3xl mx-auto w-full bg-[#0d0f14]/80 backdrop-blur-xl border border-white/10 rounded-xl p-6 sm:p-10 md:p-12 shadow-2xl shadow-black/80">
+            <!-- Scene Header Badge & Phase -->
+            <div class="scene-hud-badge flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-6">
+              <div class="flex items-center gap-2 font-mono text-xs tracking-wider">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span class="text-amber-300 font-medium">{scene.badge}</span>
+              </div>
+              <span class="font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
+                SCENE 0{index + 1} // 04
+              </span>
+            </div>
+
+            <!-- Scene Title -->
+            <h2 class="font-display font-bold text-xl sm:text-2xl md:text-3xl text-white uppercase tracking-tight mb-4 leading-snug">
+              {scene.title}
+            </h2>
+
+            <!-- Narrative Paragraphs -->
+            <div class="space-y-4 text-zinc-300 font-sans font-light text-sm sm:text-base leading-relaxed">
+              {scene.narrative.map((para) => (
+                <p class="text-balance">{para}</p>
+              ))}
+            </div>
+
+            <!-- Scene Footer Callout / Action (Only on final scene) -->
+            {index === scenes.length - 1 && (
+              <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center gap-4">
+                <a 
+                  href="/#work" 
+                  class="px-6 py-2.5 rounded bg-amber-400 hover:bg-amber-300 text-zinc-950 font-heading font-semibold text-xs sm:text-sm tracking-wider transition-all shadow-lg shadow-amber-400/10 flex items-center gap-2"
+                >
+                  <span>EXPLORE WORK</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+                <a 
+                  href="https://github.com/girishlade111" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-5 py-2.5 rounded border border-white/15 hover:border-white/30 bg-white/5 hover:bg-white/10 text-white font-mono text-xs tracking-wider transition-all flex items-center gap-2"
+                >
+                  <span>GITHUB [↗]</span>
+                </a>
+                <a 
+                  href="https://linkedin.com/in/girishlade" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-5 py-2.5 rounded border border-white/15 hover:border-white/30 bg-white/5 hover:bg-white/10 text-white font-mono text-xs tracking-wider transition-all flex items-center gap-2"
+                >
+                  <span>LINKEDIN [↗]</span>
+                </a>
+              </div>
+            )}
+          </div>
+        </section>
+      ))}
+    </main>
+
+    <!-- Timeline End Marker -->
+    <footer class="relative z-20 py-16 text-center border-t border-white/10 flex flex-col items-center justify-center">
+      <div class="font-mono text-xs tracking-widest text-zinc-500 uppercase mb-2">
+        // END OF TIMELINE REEL //
+      </div>
+      <a 
+        href="/" 
+        class="inline-flex items-center gap-2 text-xs font-mono text-amber-400 hover:text-amber-300 transition-colors"
+      >
+        <span>[↖] RETURN TO PRIMARY HUD VIEW</span>
+      </a>
+    </footer>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .scene-section {
+    contain: layout paint;
+  }
+
+  .scene-bg-layer {
+    will-change: transform;
+  }
+
+  .scene-text-card {
+    will-change: transform, opacity;
+  }
+</style>
+
+<!-- Client Animation Script: GSAP ScrollTrigger Scrubbing with Explicit Lifecycle Cleanup -->
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Array to hold ScrollTrigger references for explicit lifecycle destruction
+  let activeAboutTriggers: ScrollTrigger[] = [];
+
+  /**
+   * Explicitly kills all active ScrollTriggers on the about page.
+   * Ensures zero memory leaks or orphaned scroll listeners on page transitions (e.g. Barba.js).
+   */
+  export function cleanupAboutAnimations() {
+    if (activeAboutTriggers && activeAboutTriggers.length > 0) {
+      activeAboutTriggers.forEach((trigger) => {
+        try {
+          trigger.kill();
+        } catch (err) {
+          console.warn('ScrollTrigger kill error:', err);
+        }
+      });
+      activeAboutTriggers = [];
+    }
+  }
+
+  /**
+   * Initializes scroll-scrubbed narrative animations across all documentary scenes.
+   */
+  export function initAboutAnimations() {
+    cleanupAboutAnimations();
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sceneSections = document.querySelectorAll('.scene-section');
+
+    sceneSections.forEach((scene) => {
+      const textCard = scene.querySelector('.scene-text-card') as HTMLElement | null;
+      const bgLayer = scene.querySelector('.scene-bg-layer') as HTMLElement | null;
+
+      if (!textCard || !bgLayer) return;
+
+      if (prefersReducedMotion) {
+        // Reduced motion fallback: Clean, static immediate visibility without parallax
+        gsap.set(textCard, { opacity: 1, y: 0 });
+        gsap.set(bgLayer, { yPercent: 0, scale: 1.05 });
+        return;
+      }
+
+      // 1. Foreground Content Card Scrub (Fade in + slight vertical slide)
+      const textTrigger = ScrollTrigger.create({
+        trigger: scene,
+        start: 'top 75%',
+        end: 'center 45%',
+        scrub: 1.2,
+        animation: gsap.fromTo(
+          textCard,
+          { opacity: 0.12, y: 55 },
+          { opacity: 1, y: 0, ease: 'power2.out' }
+        ),
+      });
+      activeAboutTriggers.push(textTrigger);
+
+      // 2. Background Parallax Scrub (Moves at a distinctly slower opposing rate for optical depth)
+      const bgTrigger = ScrollTrigger.create({
+        trigger: scene,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+        animation: gsap.fromTo(
+          bgLayer,
+          { yPercent: -14, scale: 1.15 },
+          { yPercent: 14, scale: 1.05, ease: 'none' }
+        ),
+      });
+      activeAboutTriggers.push(bgTrigger);
+    });
+
+    // Refresh ScrollTrigger to ensure accurate layout calculations
+    ScrollTrigger.refresh();
+  }
+
+  // Expose lifecycle hooks on window for Barba.js or SPA routers
+  (window as any).__aboutAnimationController = {
+    init: initAboutAnimations,
+    cleanup: cleanupAboutAnimations,
+  };
+
+  // Execution triggers
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAboutAnimations);
+  } else {
+    initAboutAnimations();
+  }
+
+  // Support Astro view transitions and page-load events
+  document.addEventListener('astro:page-load', initAboutAnimations);
+  window.addEventListener('beforeunload', cleanupAboutAnimations);
+</script>

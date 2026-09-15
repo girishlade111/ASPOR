@@ -32,9 +32,9 @@ import CinematicOverlay from './CinematicOverlay.astro';
       <source src="/assets/hero/hero-reel.mp4" type="video/mp4" />
     </video>
 
-    <!-- Multi-Layer Scrim Overlays (Ensures high contrast & authentic 35mm tone) -->
-    <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/65 to-[#08090b]/85 pointer-events-none"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.2)_0%,rgba(8,9,11,0.8)_85%,#08090b_100%)] pointer-events-none"></div>
+    <!-- Multi-Layer Scrim Overlays (Ensures deep contrast, rich blacks & authentic 35mm tone) -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/75 to-[#08090b]/90 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.32)_0%,rgba(8,9,11,0.88)_80%,#08090b_100%)] pointer-events-none"></div>
   </div>
 
   <!-- Reusable Cinematic Visual Effects Overlay (Grain, Vignette, Amber Light Leaks) -->
@@ -173,7 +173,7 @@ import CinematicOverlay from './CinematicOverlay.astro';
 <style>
   :global(.char-reveal) {
     display: inline-block;
-    will-change: transform, opacity;
+    will-change: transform, opacity, text-shadow;
   }
 </style>
 
@@ -213,6 +213,7 @@ import CinematicOverlay from './CinematicOverlay.astro';
       opacity: 1,
       y: 0,
       visibility: 'visible',
+      textShadow: 'none',
     });
   } else {
     try {
@@ -233,20 +234,23 @@ import CinematicOverlay from './CinematicOverlay.astro';
         { opacity: 1, y: 0, duration: 0.8 }
       );
 
-      // 2. Character stagger reveal on the cinematic title
+      // 2. Character stagger reveal on the cinematic title with subtle chromatic aberration settle
       tl.fromTo(
         split.chars,
         {
           opacity: 0,
           y: 40,
           rotateX: -35,
+          textShadow: '-2.5px 0 1px rgba(239, 68, 68, 0.75), 2.5px 0 1px rgba(56, 189, 248, 0.75)',
         },
         {
           opacity: 1,
           y: 0,
           rotateX: 0,
+          textShadow: '0px 0 0px rgba(239, 68, 68, 0), 0px 0 0px rgba(56, 189, 248, 0)',
           duration: 0.85,
           stagger: 0.018,
+          clearProps: 'textShadow',
         },
         '-=0.4'
       );
@@ -284,7 +288,22 @@ import CinematicOverlay from './CinematicOverlay.astro';
     } catch (e) {
       console.warn('SplitText fallback triggered:', e);
       gsap.fromTo(
-        ['.hero-kicker', '.hero-title', '.hero-sub', '.hero-badges', '.hero-actions', '.hero-scroll'],
+        '.hero-title',
+        {
+          opacity: 0,
+          y: 20,
+          textShadow: '-2px 0 1px rgba(239, 68, 68, 0.7), 2px 0 1px rgba(56, 189, 248, 0.7)',
+        },
+        {
+          opacity: 1,
+          y: 0,
+          textShadow: '0px 0 0px rgba(239, 68, 68, 0), 0px 0 0px rgba(56, 189, 248, 0)',
+          duration: 0.85,
+          clearProps: 'textShadow',
+        }
+      );
+      gsap.fromTo(
+        ['.hero-kicker', '.hero-sub', '.hero-badges', '.hero-actions', '.hero-scroll'],
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }
       );
