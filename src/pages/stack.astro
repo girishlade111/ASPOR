@@ -2,6 +2,7 @@
 // src/pages/stack.astro - Animated Skills Grid & LadeStack Product Suite Showcase
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CinematicOverlay from '../components/CinematicOverlay.astro';
+import { withBase } from '../utils/site';
 
 // Technical Skills Categories & Data
 const skillCategories = [
@@ -416,7 +417,7 @@ const ladestackProducts = [
     <!-- Bottom Navigation Footer Strip -->
     <footer class="max-w-7xl mx-auto border-t border-white/10 pt-10 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-400">
       <a 
-        href="/work" 
+        href={withBase('/work')} 
         class="hover:text-white transition-colors flex items-center gap-2"
       >
         <span>[←] EXPLORE WORK ARCHIVES</span>
@@ -424,7 +425,7 @@ const ladestackProducts = [
 
       <div class="flex items-center gap-3">
         <a 
-          href="/about" 
+          href={withBase('/about')} 
           class="hover:text-amber-300 transition-colors"
         >
           READ ABOUT NARRATIVE [→]

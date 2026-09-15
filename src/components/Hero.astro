@@ -3,6 +3,7 @@
 import { Image } from 'astro:assets';
 import CinematicOverlay from './CinematicOverlay.astro';
 import heroPoster from '../assets/hero-poster.jpg';
+import { withBase } from '../utils/site';
 ---
 
 <section 
@@ -37,10 +38,10 @@ import heroPoster from '../assets/hero-poster.jpg';
       loop
       playsinline
       preload="auto"
-      poster="/assets/hero/poster.jpg"
+      poster={withBase('/assets/hero/poster.jpg')}
     >
-      <source src="/assets/hero/hero-reel.webm" type="video/webm" />
-      <source src="/assets/hero/hero-reel.mp4" type="video/mp4" />
+      <source src={withBase('/assets/hero/hero-reel.webm')} type="video/webm" />
+      <source src={withBase('/assets/hero/hero-reel.mp4')} type="video/mp4" />
     </video>
 
     <!-- Multi-Layer Scrim Overlays (Ensures deep contrast, rich blacks & authentic 35mm tone) -->
@@ -143,7 +144,7 @@ import heroPoster from '../assets/hero-poster.jpg';
     <!-- Primary Showcase Actions (No lead capture / pure showcase) -->
     <div class="hero-actions flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
       <a 
-        href="/work" 
+        href={withBase('/work')} 
         class="w-full sm:w-auto px-7 py-3 rounded bg-white text-zinc-950 font-heading font-semibold text-xs sm:text-sm tracking-wider hover:bg-amber-300 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-white/5"
       >
         <span>EXPLORE WORK</span>
@@ -153,7 +154,7 @@ import heroPoster from '../assets/hero-poster.jpg';
       </a>
 
       <a 
-        href="/about" 
+        href={withBase('/about')} 
         class="w-full sm:w-auto px-7 py-3 rounded bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/15 hover:border-white/30 font-heading font-semibold text-xs sm:text-sm tracking-wider transition-all duration-300 flex items-center justify-center gap-2"
       >
         <span>ABOUT NARRATIVE</span>

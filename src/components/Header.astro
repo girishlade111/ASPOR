@@ -6,32 +6,35 @@ interface Props {
 
 const { class: customClass = '' } = Astro.props;
 
-// Determine current active page from Astro.url
+import { withBase } from '../utils/site';
+
+// Determine current active page from Astro.url (strip the deploy subpath first)
 const pathname = Astro.url.pathname;
-const normalizedPath = pathname.replace(/\/$/, '') || '/';
+const baseStripped = pathname.replace(new RegExp(`^${import.meta.env.BASE_URL.replace(/\/$/, '')}`), '');
+const normalizedPath = baseStripped.replace(/\/$/, '') || '/';
 
 const navItems = [
   {
     label: 'WORK',
-    href: '/work',
+    href: withBase('/work'),
     index: '01',
     isActive: normalizedPath === '/work' || normalizedPath.startsWith('/work/'),
   },
   {
     label: 'ABOUT',
-    href: '/about',
+    href: withBase('/about'),
     index: '02',
     isActive: normalizedPath === '/about' || normalizedPath.startsWith('/about/'),
   },
   {
     label: 'STACK',
-    href: '/stack',
+    href: withBase('/stack'),
     index: '03',
     isActive: normalizedPath === '/stack' || normalizedPath.startsWith('/stack/'),
   },
   {
     label: 'CONTACT',
-    href: '/contact',
+    href: withBase('/contact'),
     index: '04',
     isActive: normalizedPath === '/contact' || normalizedPath.startsWith('/contact/'),
   },
@@ -42,7 +45,7 @@ const navItems = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
     
     <!-- Monogram / Logo -->
-    <a href="/" class="group flex items-center gap-3 select-none" aria-label="Girish Lade — Home">
+    <a href={withBase('/')} class="group flex items-center gap-3 select-none" aria-label="Girish Lade — Home">
       <span class="w-8 h-8 rounded border border-white/20 bg-white/5 flex items-center justify-center font-heading font-bold text-sm tracking-wider text-white group-hover:border-amber-400/60 group-hover:text-amber-300 transition-all shadow-sm">
         GL
       </span>
