@@ -1,9 +1,9 @@
 ---
 // CinematicOverlay.astro
 // Reusable cinematic visual identity component:
-// 1. GPU-cheap animated film grain
-// 2. Anamorphic edge vignette
-// 3. Drifting amber/orange light leaks / film burn
+// 1. GPU-cheap animated film grain (sub-50kb lightweight monochromatic SVG noise, 0 network requests)
+// 2. Anamorphic edge vignette (radial gradient framing)
+// 3. Drifting amber/orange light leaks & film burn (corner-positioned, screen blend mode, low opacity)
 
 interface Props {
   intensity?: 'light' | 'heavy';
@@ -36,184 +36,210 @@ const isHeavy = intensity === 'heavy';
   data-cinematic-overlay
   data-intensity={intensity}
 >
-  {/* Layer 1: Drifting Amber / Orange Light Leaks & Film Burn */}
+  {/* Layer 1: Drifting Amber / Orange Light Leaks & Film Burn (Edges & Corners) */}
   {showLightLeaks && (
-    <div class:list={['cinematic-leaks-layer absolute inset-0 w-full h-full', isHeavy ? 'opacity-85' : 'opacity-40']}>
-      <!-- Top-Left Warm Amber Leak -->
-      <div class="cinematic-leak leak-amber-primary"></div>
-      <!-- Bottom-Right Golden Orange Flare -->
-      <div class="cinematic-leak leak-orange-secondary"></div>
-      <!-- Floating Accent Streak -->
-      <div class="cinematic-leak leak-streak-accent"></div>
+    <div class:list={['cinematic-leaks-layer', isHeavy ? 'intensity-heavy' : 'intensity-light']}>
+      <!-- Top-Left Warm Amber Corner Flare -->
+      <div class="cinematic-leak leak-amber-corner"></div>
+      <!-- Bottom-Right Golden Burn Flare -->
+      <div class="cinematic-leak leak-orange-corner"></div>
+      <!-- Top-Right Edge Accent Flare -->
+      <div class="cinematic-leak leak-amber-edge"></div>
     </div>
   )}
 
-  {/* Layer 2: Anamorphic Vignette */}
+  {/* Layer 2: Anamorphic Edge Vignette */}
   {showVignette && (
-    <div 
-      class:list={[
-        'cinematic-vignette-layer absolute inset-0 w-full h-full',
-        isHeavy ? 'opacity-90' : 'opacity-50'
-      ]}
-    ></div>
+    <div class:list={['cinematic-vignette-layer', isHeavy ? 'intensity-heavy' : 'intensity-light']}></div>
   )}
 
-  {/* Layer 3: GPU-cheap Animated Film Grain Texture */}
+  {/* Layer 3: GPU-cheap Monochromatic Animated Film Grain */}
   {showGrain && (
-    <div 
-      class:list={[
-        'cinematic-grain-layer',
-        isHeavy ? 'opacity-35' : 'opacity-18'
-      ]}
-    ></div>
+    <div class:list={['cinematic-grain-layer', isHeavy ? 'intensity-heavy' : 'intensity-light']}></div>
   )}
 </div>
 
 <style>
-  /* Base Container Safety */
+  /* Base Container: Absolute/Fixed, Non-blocking, hardware-accelerated */
   [data-cinematic-overlay] {
-    contain: layout paint;
+    contain: strict;
+    pointer-events: none !important;
   }
 
   /* Layer 1: Drifting Light Leaks */
   .cinematic-leaks-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     mix-blend-mode: screen;
     pointer-events: none;
-    will-change: transform, opacity;
+    transition: opacity 0.5s ease;
+  }
+
+  .cinematic-leaks-layer.intensity-heavy {
+    opacity: 0.60;
+  }
+
+  .cinematic-leaks-layer.intensity-light {
+    opacity: 0.28;
   }
 
   .cinematic-leak {
     position: absolute;
     border-radius: 9999px;
-    filter: blur(70px);
+    filter: blur(80px);
     pointer-events: none;
     transform: translateZ(0);
     will-change: transform, opacity;
   }
 
-  /* Leak 1: Primary Warm Amber (#f59e0b / #d97706) */
-  .leak-amber-primary {
+  /* Leak 1: Top-Left Corner Warm Amber Flare */
+  .leak-amber-corner {
     top: -15%;
-    left: -10%;
-    width: 65vw;
-    height: 65vh;
-    max-width: 750px;
-    max-height: 750px;
-    background: radial-gradient(
-      circle at center,
-      rgba(245, 158, 11, 0.42) 0%,
-      rgba(217, 119, 6, 0.24) 40%,
-      rgba(180, 83, 9, 0.10) 65%,
-      transparent 80%
-    );
-    animation: leak-drift-amber 22s ease-in-out infinite alternate;
-  }
-
-  /* Leak 2: Golden Orange Burn (#ea580c / #fbbf24) */
-  .leak-orange-secondary {
-    bottom: -20%;
-    right: -10%;
-    width: 60vw;
-    height: 60vh;
-    max-width: 700px;
-    max-height: 700px;
-    background: radial-gradient(
-      circle at center,
-      rgba(234, 88, 12, 0.38) 0%,
-      rgba(251, 191, 36, 0.22) 38%,
-      rgba(245, 158, 11, 0.08) 65%,
-      transparent 80%
-    );
-    animation: leak-drift-orange 26s ease-in-out infinite alternate-reverse;
-  }
-
-  /* Leak 3: Dynamic Anamorphic Streak Accent */
-  .leak-streak-accent {
-    top: 35%;
-    right: 15%;
+    left: -12%;
     width: 45vw;
-    height: 35vh;
-    max-width: 500px;
-    max-height: 400px;
+    height: 45vw;
+    max-width: 550px;
+    max-height: 550px;
     background: radial-gradient(
-      ellipse at center,
-      rgba(251, 191, 36, 0.28) 0%,
-      rgba(217, 119, 6, 0.14) 45%,
+      circle at 35% 35%,
+      rgba(245, 158, 11, 0.32) 0%,
+      rgba(217, 119, 6, 0.16) 40%,
+      rgba(180, 83, 9, 0.05) 60%,
       transparent 75%
     );
-    animation: leak-drift-streak 18s ease-in-out infinite alternate;
+    animation: leak-drift-amber 24s ease-in-out infinite alternate;
   }
 
-  /* Drift Animations */
+  /* Leak 2: Bottom-Right Golden Orange Burn Flare */
+  .leak-orange-corner {
+    bottom: -15%;
+    right: -10%;
+    width: 42vw;
+    height: 42vw;
+    max-width: 520px;
+    max-height: 520px;
+    background: radial-gradient(
+      circle at 65% 65%,
+      rgba(234, 88, 12, 0.28) 0%,
+      rgba(251, 191, 36, 0.14) 40%,
+      rgba(245, 158, 11, 0.04) 65%,
+      transparent 75%
+    );
+    animation: leak-drift-orange 28s ease-in-out infinite alternate-reverse;
+  }
+
+  /* Leak 3: Top-Right Edge Ambient Glow */
+  .leak-amber-edge {
+    top: -10%;
+    right: -8%;
+    width: 35vw;
+    height: 35vw;
+    max-width: 420px;
+    max-height: 420px;
+    background: radial-gradient(
+      circle at 60% 40%,
+      rgba(251, 191, 36, 0.22) 0%,
+      rgba(217, 119, 6, 0.10) 45%,
+      transparent 70%
+    );
+    animation: leak-drift-edge 20s ease-in-out infinite alternate;
+  }
+
+  /* Slow Ambient Drift Animations */
   @keyframes leak-drift-amber {
     0% {
       transform: translate3d(0, 0, 0) scale(1);
-      opacity: 0.8;
+      opacity: 0.75;
     }
     50% {
-      transform: translate3d(8vw, 10vh, 0) scale(1.12);
+      transform: translate3d(4vw, 5vh, 0) scale(1.08);
       opacity: 1;
     }
     100% {
-      transform: translate3d(3vw, 18vh, 0) scale(0.95);
-      opacity: 0.75;
+      transform: translate3d(1vw, 8vh, 0) scale(0.96);
+      opacity: 0.7;
     }
   }
 
   @keyframes leak-drift-orange {
     0% {
       transform: translate3d(0, 0, 0) scale(1);
-      opacity: 0.85;
+      opacity: 0.8;
     }
     50% {
-      transform: translate3d(-10vw, -8vh, 0) scale(1.15);
+      transform: translate3d(-5vw, -4vh, 0) scale(1.10);
       opacity: 1;
     }
     100% {
-      transform: translate3d(-5vw, -14vh, 0) scale(0.92);
-      opacity: 0.7;
+      transform: translate3d(-2vw, -7vh, 0) scale(0.94);
+      opacity: 0.65;
     }
   }
 
-  @keyframes leak-drift-streak {
+  @keyframes leak-drift-edge {
     0% {
-      transform: translate3d(0, 0, 0) scale(0.9) rotate(0deg);
+      transform: translate3d(0, 0, 0) scale(0.95);
       opacity: 0.5;
     }
     50% {
-      transform: translate3d(-6vw, 8vh, 0) scale(1.2) rotate(6deg);
+      transform: translate3d(-3vw, 4vh, 0) scale(1.12);
       opacity: 0.85;
     }
     100% {
-      transform: translate3d(4vw, -6vh, 0) scale(1.05) rotate(-4deg);
+      transform: translate3d(2vw, -3vh, 0) scale(1.02);
       opacity: 0.6;
     }
   }
 
   /* Layer 2: Anamorphic Edge Vignette */
   .cinematic-vignette-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     background: radial-gradient(
       ellipse at center,
-      transparent 38%,
-      rgba(8, 9, 11, 0.45) 72%,
-      rgba(4, 5, 7, 0.88) 100%
+      transparent 45%,
+      rgba(8, 9, 11, 0.35) 75%,
+      rgba(4, 5, 7, 0.82) 100%
     );
     pointer-events: none;
+    transition: opacity 0.5s ease;
   }
 
-  /* Layer 3: GPU-cheap Animated Film Grain */
+  .cinematic-vignette-layer.intensity-heavy {
+    opacity: 0.85;
+  }
+
+  .cinematic-vignette-layer.intensity-light {
+    opacity: 0.45;
+  }
+
+  /* Layer 3: GPU-cheap Monochromatic Animated Film Grain */
   .cinematic-grain-layer {
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    /* Monochromatic fractal noise texture with desaturation matrix */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
     background-repeat: repeat;
     mix-blend-mode: overlay;
     pointer-events: none;
     animation: grain-jitter 0.75s steps(4) infinite;
     will-change: transform;
+    transition: opacity 0.5s ease;
+  }
+
+  .cinematic-grain-layer.intensity-heavy {
+    opacity: 0.50;
+  }
+
+  .cinematic-grain-layer.intensity-light {
+    opacity: 0.25;
   }
 
   @keyframes grain-jitter {
@@ -221,13 +247,13 @@ const isHeavy = intensity === 'heavy';
       transform: translate3d(0, 0, 0);
     }
     25% {
-      transform: translate3d(-2%, -3%, 0);
+      transform: translate3d(-1.5%, -2%, 0);
     }
     50% {
-      transform: translate3d(3%, 1%, 0);
+      transform: translate3d(2%, 1%, 0);
     }
     75% {
-      transform: translate3d(-1%, 2%, 0);
+      transform: translate3d(-1%, 1.5%, 0);
     }
     100% {
       transform: translate3d(0, 0, 0);
