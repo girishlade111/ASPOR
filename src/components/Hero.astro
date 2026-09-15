@@ -4,7 +4,7 @@
 
 <section 
   id="hero" 
-  class="relative w-full min-h-[calc(100vh-56px)] flex items-center justify-center overflow-hidden px-4 sm:px-8 py-16"
+  class="relative w-full min-h-[calc(100vh-56px)] flex items-center justify-center overflow-hidden px-4 sm:px-8 py-8 sm:py-12"
 >
   <!-- Background Video & Fallback Poster Container -->
   <div class="absolute inset-0 w-full h-full overflow-hidden bg-[#08090b]">
@@ -12,15 +12,15 @@
     <img 
       src="/assets/hero/poster.jpg" 
       alt="Cinematic Hero Backdrop" 
-      class="hero-poster absolute inset-0 w-full h-full object-cover object-center scale-105 transition-opacity duration-1000"
+      class="hero-poster absolute inset-0 w-full h-full object-cover object-center scale-105 transition-opacity duration-1000 filter grayscale-[50%] contrast-[115%] brightness-[45%]"
       loading="eager"
       fetchpriority="high"
     />
 
-    <!-- Fullscreen Video Element -->
+    <!-- Fullscreen Video Element with Cinematic Color Grade -->
     <video
       id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-1000 scale-105"
+      class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-1000 scale-105 filter grayscale-[80%] contrast-[130%] brightness-[38%]"
       autoplay
       muted
       loop
@@ -31,9 +31,9 @@
       <source src="/assets/hero/hero-reel.mp4" type="video/mp4" />
     </video>
 
-    <!-- Cinematic Multi-Layer Scrim Overlays (Ensures high contrast text legibility) -->
-    <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/60 to-[#08090b]/80"></div>
-    <div class="absolute inset-0 bg-radial from-transparent via-[#08090b]/40 to-[#08090b]/90"></div>
+    <!-- Multi-Layer Scrim Overlays (Ensures high contrast & authentic 35mm tone) -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/65 to-[#08090b]/85 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.2)_0%,rgba(8,9,11,0.8)_85%,#08090b_100%)] pointer-events-none"></div>
   </div>
 
   <!-- Camera Viewfinder / HUD Reticles (Documentary framing elements) -->
@@ -77,41 +77,41 @@
   </div>
 
   <!-- Main Hero Narrative & Title Content -->
-  <div class="relative z-30 max-w-5xl mx-auto w-full text-center flex flex-col items-center justify-center pt-8 sm:pt-12">
+  <div class="relative z-30 max-w-6xl mx-auto w-full text-center flex flex-col items-center justify-center">
     
     <!-- Meta Kicker Badge -->
-    <div class="hero-kicker inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-6 sm:mb-8">
+    <div class="hero-kicker inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-4 sm:mb-6">
       <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-      <span class="font-mono text-xs tracking-widest text-zinc-300 uppercase">
+      <span class="font-mono text-[11px] sm:text-xs tracking-widest text-zinc-300 uppercase">
         DOCUMENTARY ARCHIVE // 2026
       </span>
       <span class="text-zinc-600">|</span>
-      <span class="font-mono text-xs tracking-widest text-amber-300/90 font-medium">
+      <span class="font-mono text-[11px] sm:text-xs tracking-widest text-amber-300/90 font-medium">
         GIRISH LADE
       </span>
     </div>
 
     <!-- Main Cinematic SplitText Title -->
-    <h1 class="hero-title font-display font-extrabold text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] sm:leading-[1] text-white uppercase mb-6 sm:mb-8 select-none">
+    <h1 class="hero-title font-display font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] tracking-tight leading-[1.08] text-white uppercase mb-4 sm:mb-6 select-none max-w-5xl">
       <span class="title-line block overflow-hidden">
-        <span class="title-text block">MECHANICAL PRECISION.</span>
+        <span class="title-text block whitespace-nowrap">MECHANICAL PRECISION.</span>
       </span>
-      <span class="title-line block overflow-hidden mt-1 sm:mt-2">
-        <span class="title-text block text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-amber-200/90">
+      <span class="title-line block overflow-hidden mt-0.5 sm:mt-1">
+        <span class="title-text block whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-amber-200/90">
           SOFTWARE CRAFT.
         </span>
       </span>
     </h1>
 
     <!-- Subtitle Narrative -->
-    <p class="hero-sub font-sans text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto font-light leading-relaxed mb-8 sm:mb-10 text-balance">
+    <p class="hero-sub font-sans text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto font-light leading-relaxed mb-6 sm:mb-8 text-balance">
       Mechanical engineer transitioning into high-impact software systems. Solo founder of 
       <strong class="font-medium text-white underline decoration-amber-400/60 underline-offset-4">LadeStack</strong> 
       — engineering autonomous developer tooling, production architectures, and resilient web experiences.
     </p>
 
     <!-- Credential / Target Focus Badges -->
-    <div class="hero-badges flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 font-mono text-xs tracking-wider mb-10 sm:mb-12">
+    <div class="hero-badges flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 font-mono text-[11px] sm:text-xs tracking-wider mb-8 sm:mb-10">
       <span class="px-3 py-1.5 rounded border border-amber-500/30 bg-amber-500/10 text-amber-300 flex items-center gap-2">
         <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
         SOLO FOUNDER @ LADESTACK
@@ -125,10 +125,10 @@
     </div>
 
     <!-- Primary Showcase Actions (No lead capture / pure showcase) -->
-    <div class="hero-actions flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+    <div class="hero-actions flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
       <a 
         href="#work" 
-        class="w-full sm:w-auto px-8 py-3.5 rounded bg-white text-zinc-950 font-heading font-semibold text-sm tracking-wider hover:bg-amber-300 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-white/5"
+        class="w-full sm:w-auto px-7 py-3 rounded bg-white text-zinc-950 font-heading font-semibold text-xs sm:text-sm tracking-wider hover:bg-amber-300 hover:text-black transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-white/5"
       >
         <span>EXPLORE WORK</span>
         <svg class="w-4 h-4 transform group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@
 
       <a 
         href="#about" 
-        class="w-full sm:w-auto px-8 py-3.5 rounded bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/15 hover:border-white/30 font-heading font-semibold text-sm tracking-wider transition-all duration-300 flex items-center justify-center gap-2"
+        class="w-full sm:w-auto px-7 py-3 rounded bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/15 hover:border-white/30 font-heading font-semibold text-xs sm:text-sm tracking-wider transition-all duration-300 flex items-center justify-center gap-2"
       >
         <span>ABOUT NARRATIVE</span>
         <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,7 @@
         href="https://github.com/girishlade111" 
         target="_blank"
         rel="noopener noreferrer"
-        class="w-full sm:w-auto px-6 py-3.5 rounded bg-transparent hover:bg-white/[0.04] text-zinc-400 hover:text-white border border-transparent hover:border-white/10 font-mono text-xs tracking-wider transition-all duration-300 flex items-center justify-center gap-2"
+        class="w-full sm:w-auto px-5 py-3 rounded bg-transparent hover:bg-white/[0.04] text-zinc-400 hover:text-white border border-transparent hover:border-white/10 font-mono text-xs tracking-wider transition-all duration-300 flex items-center justify-center gap-2"
       >
         <span>GITHUB [↗]</span>
       </a>
@@ -159,11 +159,18 @@
   </div>
 
   <!-- Bottom Scroll Scrub Prompt -->
-  <div class="hero-scroll absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 font-mono text-[10px] tracking-widest text-zinc-500 uppercase pointer-events-none select-none">
-    <div class="w-[1px] h-8 bg-gradient-to-b from-amber-400/80 via-white/40 to-transparent animate-pulse"></div>
+  <div class="hero-scroll absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 font-mono text-[10px] tracking-widest text-zinc-500 uppercase pointer-events-none select-none">
+    <div class="w-[1px] h-6 bg-gradient-to-b from-amber-400/80 via-white/40 to-transparent animate-pulse"></div>
     <span>SCROLL TO ADVANCE // SCENE 01</span>
   </div>
 </section>
+
+<style>
+  :global(.char-reveal) {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+</style>
 
 <!-- Client Animation Script: GSAP SplitText & Video Readiness -->
 <script>
@@ -176,7 +183,6 @@
   // Video Autoplay and Smooth Fade-in handler
   const video = document.getElementById('hero-video') as HTMLVideoElement | null;
   if (video) {
-    // When video is ready to play, smoothly fade it in over poster
     const onVideoReady = () => {
       video.classList.remove('opacity-0');
       video.classList.add('opacity-100');
@@ -189,7 +195,6 @@
       video.addEventListener('loadeddata', onVideoReady, { once: true });
     }
 
-    // Ensure muted autoplay works across strict browser policies
     video.play().catch((err) => {
       console.warn('Hero video autoplay muted fallback active:', err);
     });
@@ -199,14 +204,12 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (prefersReducedMotion) {
-    // Instant display for reduced motion users
     gsap.set(['.hero-kicker', '.hero-title', '.hero-sub', '.hero-badges', '.hero-actions', '.hero-scroll'], {
       opacity: 1,
       y: 0,
       visibility: 'visible',
     });
   } else {
-    // Perform SplitText and choreographed GSAP reveal
     try {
       const split = new SplitText('.title-text', {
         type: 'words,chars',
@@ -230,15 +233,15 @@
         split.chars,
         {
           opacity: 0,
-          y: 45,
-          rotateX: -40,
+          y: 40,
+          rotateX: -35,
         },
         {
           opacity: 1,
           y: 0,
           rotateX: 0,
-          duration: 0.9,
-          stagger: 0.02,
+          duration: 0.85,
+          stagger: 0.018,
         },
         '-=0.4'
       );
@@ -246,8 +249,8 @@
       // 3. Subtitle narrative slide-fade
       tl.fromTo(
         '.hero-sub',
-        { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.8 },
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.75 },
         '-=0.5'
       );
 
@@ -255,7 +258,7 @@
       tl.fromTo(
         '.hero-badges',
         { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.7 },
+        { opacity: 1, y: 0, duration: 0.65 },
         '-=0.4'
       );
 
@@ -263,19 +266,18 @@
       tl.fromTo(
         '.hero-actions',
         { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.7 },
+        { opacity: 1, y: 0, duration: 0.65 },
         '-=0.4'
       );
 
       tl.fromTo(
         '.hero-scroll',
         { opacity: 0 },
-        { opacity: 1, duration: 1 },
+        { opacity: 1, duration: 0.9 },
         '-=0.2'
       );
     } catch (e) {
-      console.warn('SplitText animation fallback triggered:', e);
-      // Resilient fallback if SplitText encounters any environment difference
+      console.warn('SplitText fallback triggered:', e);
       gsap.fromTo(
         ['.hero-kicker', '.hero-title', '.hero-sub', '.hero-badges', '.hero-actions', '.hero-scroll'],
         { opacity: 0, y: 20 },
