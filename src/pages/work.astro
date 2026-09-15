@@ -52,8 +52,7 @@ const projects = await getAllProjects();
 
     <!-- Projects Grid Container -->
     <main class="max-w-7xl mx-auto">
-      {projects.length === 0 ? (
-        <!-- Clean Empty State Placeholder -->
+      {projects.length === 0 && (
         <div class="empty-state-card relative z-10 w-full py-24 px-6 text-center rounded-2xl border border-white/10 bg-[#0d0f14]/60 backdrop-blur-xl flex flex-col items-center justify-center">
           <div class="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 flex items-center justify-center text-amber-400 font-mono text-base mb-4">
             [00]
@@ -71,8 +70,9 @@ const projects = await getAllProjects();
             RETURN TO HERO
           </a>
         </div>
-      ) : (
-        <!-- Responsive 3-Column Grid (1 col mobile, 2 cols tablet, 3 cols desktop) -->
+      )}
+
+      {projects.length > 0 && (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {projects.map((project) => (
             <article 
