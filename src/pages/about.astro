@@ -31,7 +31,7 @@ const scenes = [
     subtitle: "TRANSITION: ATOMS TO BITS // REACTIVE STATE & RUNTIMES",
     title: "FROM PHYSICAL KINEMATICS TO DISTRIBUTED STATE",
     narrative: [
-      "Transitioning into software engineering was not an abandonment of mechanical principles—it was an amplification. The state transitions that govern an automated CNC manufacturing cell mirror the distributed concurrency models of modern distributed software.",
+      "Transitioning into software engineering was not an abandonment of mechanical principles—it was an amplification. The state transitions that govern an automated CNC manufacturing cell mirror the distributed concurrency models of modern software systems.",
       "I traded lathes for TypeScript, Rust, and high-throughput web runtimes. My focus shifted from mechanical friction to runtime latency, memory layout, and bulletproof developer ergonomics."
     ],
     badge: "PIVOT // SOFTWARE SYSTEMS",
@@ -97,9 +97,9 @@ const scenes = [
   <div class="about-documentary-container relative w-full overflow-hidden bg-[#08090b] text-[#f8fafc]">
     
     <!-- Hero Sequence Intro Banner -->
-    <header class="relative z-20 min-h-[50vh] flex flex-col items-center justify-center text-center px-4 sm:px-8 pt-16 pb-12">
+    <header class="relative z-20 min-h-[55vh] flex flex-col items-center justify-center text-center px-4 sm:px-8 pt-20 pb-16">
       <!-- Camera HUD Header Strip -->
-      <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-6">
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-6">
         <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
         <span class="font-mono text-xs tracking-widest text-zinc-300 uppercase">
           REEL ARCHIVE // ARCHIVAL FOOTAGE
@@ -114,15 +114,15 @@ const scenes = [
         THE DOCUMENTARY <span class="text-amber-400">NARRATIVE.</span>
       </h1>
 
-      <p class="font-sans font-light text-zinc-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6">
+      <p class="font-sans font-light text-zinc-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
         A chronological breakdown of physical engineering principles translated into modern distributed software craft.
       </p>
 
-      <div class="flex items-center gap-3 font-mono text-[11px] text-zinc-500 tracking-widest uppercase">
-        <span class="text-amber-400/90 font-semibold">[+]</span>
-        <span>SCROLL TO SCRUB TIMELINE</span>
-        <span class="text-zinc-700">&bull;</span>
-        <span>4 SCENES RECORDED</span>
+      <div class="flex items-center gap-3 font-mono text-xs text-zinc-400 tracking-widest uppercase bg-black/40 px-4 py-2 rounded border border-white/5 backdrop-blur-sm">
+        <span class="text-amber-400 font-bold">[+]</span>
+        <span>SCROLL DOWN TO ADVANCE FOOTAGE</span>
+        <span class="text-zinc-600">&bull;</span>
+        <span class="text-zinc-400">4 SCENES</span>
       </div>
     </header>
 
@@ -131,7 +131,7 @@ const scenes = [
       {scenes.map((scene, index) => (
         <section 
           id={scene.id} 
-          class="scene-section relative min-h-[100vh] flex items-center justify-center px-4 sm:px-8 py-20 overflow-hidden border-t border-white/[0.05]"
+          class="scene-section relative min-h-[110vh] flex flex-col justify-center items-center px-4 sm:px-8 py-24 sm:py-32 overflow-hidden border-t border-white/[0.06]"
           data-scene-index={index}
         >
           <!-- Parallax Background Image Container -->
@@ -139,22 +139,22 @@ const scenes = [
             <img 
               src={scene.image} 
               alt={scene.alt} 
-              class="scene-bg-layer absolute -inset-y-[20%] inset-x-0 w-full h-[140%] object-cover object-center filter grayscale-[65%] contrast-[130%] brightness-[28%] scale-105"
+              class="scene-bg-layer absolute -inset-y-[25%] inset-x-0 w-full h-[150%] object-cover object-center filter grayscale-[50%] contrast-[120%] brightness-[44%] scale-105"
               loading="lazy"
             />
-            <!-- Dark Film Scrims -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/80 to-[#08090b] pointer-events-none"></div>
-            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.25)_0%,rgba(8,9,11,0.85)_75%,#08090b_100%)] pointer-events-none"></div>
+            <!-- Dark Film Scrims: Balanced for high contrast readability while keeping visual depth -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/60 to-[#08090b]/85 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.20)_0%,rgba(8,9,11,0.78)_75%,#08090b_100%)] pointer-events-none"></div>
           </div>
 
           <!-- Viewfinder HUD Reticle Overlay for Scene -->
           <div class="absolute inset-6 sm:inset-10 pointer-events-none z-10 flex flex-col justify-between" aria-hidden="true">
-            <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs text-zinc-500 tracking-wider">
+            <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs text-zinc-400 tracking-wider">
               <div class="flex items-center gap-2">
                 <span class="text-amber-400 font-semibold">[+]</span>
                 <span>{scene.logNumber}</span>
               </div>
-              <div class="hidden sm:flex items-center gap-3 text-zinc-600">
+              <div class="hidden sm:flex items-center gap-3 text-zinc-500">
                 <span>LENS: {scene.telemetry.focal}</span>
                 <span>&bull;</span>
                 <span>EXP: {scene.telemetry.shutter}</span>
@@ -165,21 +165,21 @@ const scenes = [
               </div>
             </div>
 
-            <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs text-zinc-600 tracking-wider">
-              <span>{scene.phase}</span>
+            <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs text-zinc-500 tracking-wider">
+              <span class="text-zinc-400">{scene.phase}</span>
               <span class="font-mono text-amber-400/90">{scene.telemetry.timecode}</span>
             </div>
           </div>
 
           <!-- Foreground Scrubbed Content Card -->
-          <div class="scene-text-card relative z-20 max-w-3xl mx-auto w-full bg-[#0d0f14]/80 backdrop-blur-xl border border-white/10 rounded-xl p-6 sm:p-10 md:p-12 shadow-2xl shadow-black/80">
+          <div class="scene-text-card relative z-20 max-w-3xl mx-auto w-full bg-[#0d0f14]/88 backdrop-blur-2xl border border-white/15 rounded-xl p-6 sm:p-10 md:p-12 shadow-2xl shadow-black/90 my-auto">
             <!-- Scene Header Badge & Phase -->
             <div class="scene-hud-badge flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 mb-6">
               <div class="flex items-center gap-2 font-mono text-xs tracking-wider">
                 <span class="w-2 h-2 rounded-full bg-amber-400"></span>
                 <span class="text-amber-300 font-medium">{scene.badge}</span>
               </div>
-              <span class="font-mono text-[11px] tracking-widest text-zinc-500 uppercase">
+              <span class="font-mono text-[11px] tracking-widest text-zinc-400 uppercase">
                 SCENE 0{index + 1} // 04
               </span>
             </div>
@@ -190,7 +190,7 @@ const scenes = [
             </h2>
 
             <!-- Narrative Paragraphs -->
-            <div class="space-y-4 text-zinc-300 font-sans font-light text-sm sm:text-base leading-relaxed">
+            <div class="space-y-4 text-zinc-200 font-sans font-light text-sm sm:text-base leading-relaxed">
               {scene.narrative.map((para) => (
                 <p class="text-balance">{para}</p>
               ))}
@@ -232,13 +232,13 @@ const scenes = [
     </main>
 
     <!-- Timeline End Marker -->
-    <footer class="relative z-20 py-16 text-center border-t border-white/10 flex flex-col items-center justify-center">
-      <div class="font-mono text-xs tracking-widest text-zinc-500 uppercase mb-2">
-        // END OF TIMELINE REEL //
+    <footer class="relative z-20 py-20 text-center border-t border-white/10 flex flex-col items-center justify-center bg-black/40">
+      <div class="font-mono text-xs tracking-widest text-zinc-500 uppercase mb-3">
+        // END OF ARCHIVAL FOOTAGE //
       </div>
       <a 
         href="/" 
-        class="inline-flex items-center gap-2 text-xs font-mono text-amber-400 hover:text-amber-300 transition-colors"
+        class="inline-flex items-center gap-2 text-xs font-mono text-amber-400 hover:text-amber-300 transition-colors px-4 py-2 rounded border border-amber-400/20 hover:border-amber-400/40 bg-amber-400/5"
       >
         <span>[↖] RETURN TO PRIMARY HUD VIEW</span>
       </a>
@@ -311,15 +311,15 @@ const scenes = [
         return;
       }
 
-      // 1. Foreground Content Card Scrub (Fade in + slight vertical slide)
+      // 1. Foreground Content Card Scrub (Fade in + vertical lock into center)
       const textTrigger = ScrollTrigger.create({
         trigger: scene,
-        start: 'top 75%',
-        end: 'center 45%',
+        start: 'top 85%',
+        end: 'center 50%',
         scrub: 1.2,
         animation: gsap.fromTo(
           textCard,
-          { opacity: 0.12, y: 55 },
+          { opacity: 0.15, y: 50 },
           { opacity: 1, y: 0, ease: 'power2.out' }
         ),
       });
@@ -333,8 +333,8 @@ const scenes = [
         scrub: true,
         animation: gsap.fromTo(
           bgLayer,
-          { yPercent: -14, scale: 1.15 },
-          { yPercent: 14, scale: 1.05, ease: 'none' }
+          { yPercent: -15, scale: 1.15 },
+          { yPercent: 15, scale: 1.05, ease: 'none' }
         ),
       });
       activeAboutTriggers.push(bgTrigger);
