@@ -45,6 +45,8 @@ const isHeavy = intensity === 'heavy';
       <div class="cinematic-leak leak-orange-corner"></div>
       <!-- Top-Right Edge Accent Flare -->
       <div class="cinematic-leak leak-amber-edge"></div>
+      <!-- Bottom-Left Cool Depth Counter-Glow (teal & orange grade) -->
+      <div class="cinematic-leak leak-teal-depth"></div>
     </div>
   )}
 
@@ -94,7 +96,7 @@ const isHeavy = intensity === 'heavy';
     will-change: transform, opacity;
   }
 
-  /* Leak 1: Top-Left Corner Warm Amber Flare */
+  /* Leak 1: Top-Left Corner Warm Amber Flare (amber -> ember -> burn) */
   .leak-amber-corner {
     top: -15%;
     left: -12%;
@@ -104,15 +106,16 @@ const isHeavy = intensity === 'heavy';
     max-height: 550px;
     background: radial-gradient(
       circle at 35% 35%,
-      rgba(245, 158, 11, 0.32) 0%,
-      rgba(217, 119, 6, 0.16) 40%,
-      rgba(180, 83, 9, 0.05) 60%,
-      transparent 75%
+      rgba(245, 158, 11, 0.34) 0%,
+      rgba(234, 88, 12, 0.20) 38%,
+      rgba(220, 38, 38, 0.10) 58%,
+      rgba(180, 83, 9, 0.04) 68%,
+      transparent 78%
     );
     animation: leak-drift-amber 24s ease-in-out infinite alternate;
   }
 
-  /* Leak 2: Bottom-Right Golden Orange Burn Flare */
+  /* Leak 2: Bottom-Right Golden Orange Burn Flare (gold -> ember -> deep red) */
   .leak-orange-corner {
     bottom: -15%;
     right: -10%;
@@ -122,15 +125,16 @@ const isHeavy = intensity === 'heavy';
     max-height: 520px;
     background: radial-gradient(
       circle at 65% 65%,
-      rgba(234, 88, 12, 0.28) 0%,
-      rgba(251, 191, 36, 0.14) 40%,
-      rgba(245, 158, 11, 0.04) 65%,
-      transparent 75%
+      rgba(251, 191, 36, 0.30) 0%,
+      rgba(234, 88, 12, 0.18) 38%,
+      rgba(220, 38, 38, 0.09) 60%,
+      rgba(245, 158, 11, 0.03) 70%,
+      transparent 78%
     );
     animation: leak-drift-orange 28s ease-in-out infinite alternate-reverse;
   }
 
-  /* Leak 3: Top-Right Edge Ambient Glow */
+  /* Leak 3: Top-Right Edge Ambient Glow (amber -> ember fade) */
   .leak-amber-edge {
     top: -10%;
     right: -8%;
@@ -140,11 +144,32 @@ const isHeavy = intensity === 'heavy';
     max-height: 420px;
     background: radial-gradient(
       circle at 60% 40%,
-      rgba(251, 191, 36, 0.22) 0%,
-      rgba(217, 119, 6, 0.10) 45%,
-      transparent 70%
+      rgba(251, 191, 36, 0.24) 0%,
+      rgba(234, 88, 12, 0.12) 42%,
+      rgba(220, 38, 38, 0.05) 62%,
+      transparent 74%
     );
     animation: leak-drift-edge 20s ease-in-out infinite alternate;
+  }
+
+  /* Leak 4: Bottom-Left Cool Depth Counter-Glow (teal & orange grade).
+     Deep teal at low opacity balances the warm flares; same transform-only
+     animation pattern, so no new compositing cost class. */
+  .leak-teal-depth {
+    bottom: -12%;
+    left: -10%;
+    width: 38vw;
+    height: 38vw;
+    max-width: 460px;
+    max-height: 460px;
+    background: radial-gradient(
+      circle at 40% 60%,
+      rgba(45, 212, 191, 0.20) 0%,
+      rgba(15, 118, 110, 0.12) 42%,
+      rgba(56, 189, 248, 0.05) 62%,
+      transparent 76%
+    );
+    animation: leak-drift-teal 26s ease-in-out infinite alternate-reverse;
   }
 
   /* Slow Ambient Drift Animations */
@@ -193,7 +218,22 @@ const isHeavy = intensity === 'heavy';
     }
   }
 
-  /* Layer 2: Anamorphic Edge Vignette */
+  @keyframes leak-drift-teal {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate3d(4vw, -4vh, 0) scale(1.1);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translate3d(1vw, -7vh, 0) scale(0.95);
+      opacity: 0.55;
+    }
+  }
+
+  /* Layer 2: Anamorphic Edge Vignette (whisper of teal in the shadows) */
   .cinematic-vignette-layer {
     position: absolute;
     inset: 0;
@@ -202,7 +242,7 @@ const isHeavy = intensity === 'heavy';
     background: radial-gradient(
       ellipse at center,
       transparent 45%,
-      rgba(8, 9, 11, 0.35) 75%,
+      rgba(10, 26, 26, 0.38) 75%,
       rgba(4, 5, 7, 0.82) 100%
     );
     pointer-events: none;

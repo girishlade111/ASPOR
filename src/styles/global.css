@@ -12,6 +12,23 @@
     --accent-amber: #e5a93c;
     --accent-cyan: #38bdf8;
     --letterbox-height: 28px;
+
+    /* ---- Cinematic color grade: teal & orange (shared tokens) ----
+       Dark base is preserved; richness comes from saturation + a cool
+       secondary accent against the warm amber primary. Tune here once —
+       every graded surface below references these variables. */
+    --accent-teal: #2dd4bf;
+    --accent-teal-deep: #0f766e;
+    --accent-ember: #ea580c;
+    --accent-burn: #dc2626;
+    /* Imagery saturation levels (1 = full color). Imagery stays dark via
+       the contrast/brightness pairs in each .grade-* utility, so text
+       legibility is unaffected by raising saturation. */
+    --grade-hero-video-sat: 0.75;
+    --grade-hero-poster-sat: 0.85;
+    --grade-scene-sat: 0.8;
+    --grade-thumb-sat: 0.9;
+    --grade-shot-sat: 0.95;
   }
 
   html {
@@ -47,6 +64,36 @@
 
 .font-mono {
   font-family: 'JetBrains Mono', monospace;
+}
+
+/* ---- Shared cinematic grade utilities ----
+   One central place for the site's color grade. Imagery keeps its dark
+   contrast/brightness treatment (text stays legible); only the saturation
+   channel is opened up via the --grade-* tokens above. */
+.grade-hero-video {
+  filter: saturate(var(--grade-hero-video-sat)) contrast(130%) brightness(38%);
+}
+
+.grade-hero-poster {
+  filter: saturate(var(--grade-hero-poster-sat)) contrast(115%) brightness(45%);
+}
+
+.grade-scene {
+  filter: saturate(var(--grade-scene-sat)) contrast(120%) brightness(44%);
+}
+
+.grade-thumb {
+  filter: saturate(var(--grade-thumb-sat)) contrast(115%) brightness(85%);
+}
+
+.grade-shot {
+  filter: saturate(var(--grade-shot-sat)) contrast(110%);
+}
+
+/* Secondary (cool) telemetry accent — complements amber primary markers.
+   #2dd4bf on #08090b ≈ 9:1 contrast; reserved for small telemetry glyphs. */
+.telemetry-teal {
+  color: var(--accent-teal);
 }
 
 /* Film Grain Texture */
