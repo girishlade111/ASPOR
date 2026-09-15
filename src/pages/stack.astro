@@ -1,0 +1,542 @@
+---
+// src/pages/stack.astro - Animated Skills Grid & LadeStack Product Suite Showcase
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CinematicOverlay from '../components/CinematicOverlay.astro';
+
+// Technical Skills Categories & Data
+const skillCategories = [
+  {
+    category: "FRONTEND & UI RUNTIMES",
+    code: "FE_01",
+    skills: [
+      {
+        name: "Astro",
+        level: "CORE ARCHITECTURE",
+        desc: "Islands architecture, content collections, zero-JS by default, and high-speed SSR/SSG workflows.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 9l9 7 9-7-9-7z"/><path d="M3 15l9 7 9-7"/></svg>`
+      },
+      {
+        name: "TypeScript",
+        level: "STRICT CONTRACTS",
+        desc: "Strong type systems, generics, abstract domain models, and zero-compromise static analysis.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.2z"/><line x1="20" y1="4" x2="20" y2="20"/></svg>`
+      },
+      {
+        name: "React",
+        level: "CONCURRENT UI",
+        desc: "Component composition, reactive state primitives, performant re-render cycles, and custom hooks.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(150 12 12)"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>`
+      },
+      {
+        name: "GSAP & ScrollTrigger",
+        level: "CHOREOGRAPHY",
+        desc: "Frame-perfect timeline orchestration, FLIP layout morphing, scrubbed animations, and micro-physics.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`
+      },
+      {
+        name: "TailwindCSS & CSS3",
+        level: "DESIGN SYSTEMS",
+        desc: "Atomic utility design tokens, responsive layouts, glassmorphism, hardware-accelerated transforms.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l4 12 4-12-3-6"/></svg>`
+      },
+      {
+        name: "WebGL & Canvas",
+        level: "VISUAL RUNTIMES",
+        desc: "Hardware-accelerated shader post-processing, particle systems, interactive viewports, and 60fps HUDs.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`
+      }
+    ]
+  },
+  {
+    category: "BACKEND & DISTRIBUTED STATE",
+    code: "BE_02",
+    skills: [
+      {
+        name: "Node.js & Runtimes",
+        level: "ASYNC ENGINE",
+        desc: "Event loop internals, high-throughput streaming, IPC channels, and robust CLI tooling architectures.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7.5v9L12 22l10-5.5v-9L12 2z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="7.5" x2="22" y2="16.5"/><line x1="2" y1="16.5" x2="22" y2="7.5"/></svg>`
+      },
+      {
+        name: "Rust",
+        level: "SYSTEMS RIGOR",
+        desc: "Deterministic memory safety, zero-cost concurrency, CLI utilities, and high-reliability binaries.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/></svg>`
+      },
+      {
+        name: "Local-First & CRDTs",
+        level: "DATA REPLICATION",
+        desc: "IndexedDB, SQLite, conflict-free state synchronization, offline-first reliability, and sub-millisecond sync.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`
+      },
+      {
+        name: "REST & API Architectures",
+        level: "CONTRACT INTERFACE",
+        desc: "Deterministic endpoint contracts, input validation pipelines, semantic error telemetry, and resilience.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`
+      }
+    ]
+  },
+  {
+    category: "ENGINEERING RIGOR & SYSTEMS TOOLING",
+    code: "ENG_03",
+    skills: [
+      {
+        name: "Docker & Containerization",
+        level: "CONTAINER RIGOR",
+        desc: "Isolated multi-stage build environments, reproducible artifacts, micro-services orchestration.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v6c0 1.5 2 3 8 3s8-1.5 8-3v-6"/><rect x="4" y="6" width="4" height="4"/><rect x="10" y="6" width="4" height="4"/><rect x="16" y="6" width="4" height="4"/><rect x="10" y="2" width="4" height="4"/></svg>`
+      },
+      {
+        name: "Git & Automated CI/CD",
+        level: "PIPELINE GUARDS",
+        desc: "Semantic versioning, automated regression testing, GitHub Actions workflows, branch protection.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="6" y1="9" x2="6" y2="15"/><path d="M18 15a9 9 0 0 0-9-9"/></svg>`
+      },
+      {
+        name: "Linux, Shell & PowerShell",
+        level: "SYSTEM DRIVERS",
+        desc: "POSIX bash scripting, cross-platform terminal automation, memory and process profiling.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`
+      },
+      {
+        name: "Mechanical Tolerance Rigor",
+        level: "FIRST PRINCIPLES",
+        desc: "Translating mechanical engineering stress limits, CAD tolerances, and kinematic determinism into software.",
+        icon: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`
+      }
+    ]
+  }
+];
+
+// LadeStack Solo-Founder Product Suite Data
+const ladestackProducts = [
+  {
+    id: "prod-01",
+    name: "LadeStack Dev Toolbox",
+    tagline: "Autonomous Developer Utilities & Local Workflow Accelerator",
+    description: "High-throughput developer utilities, transformation pipelines, and clipboard accelerators built with zero network dependency.",
+    url: "https://toolbox.ladestack.in",
+    githubUrl: "https://github.com/girishlade111/ladestack-dev-toolbox",
+    caseStudyUrl: "/work/ladestack-dev-toolbox",
+    tags: ["Astro", "TypeScript", "TailwindCSS", "Node.js"],
+    badge: "LIVE PRODUCTION // v1.4",
+    badgeColor: "amber",
+    telemetry: "LATENCY < 200MS &bull; ZERO NETWORK DEPENDENCY"
+  },
+  {
+    id: "prod-02",
+    name: "LadeStack Flashcard Engine",
+    tagline: "Spaced-Repetition Cognitive Memory Architecture",
+    description: "Algorithmic cognitive accelerator using modified Leitner & SM-2 decay models to bridge mechanical discipline with complex software retention.",
+    url: "https://flashcards.ladestack.in",
+    githubUrl: "https://github.com/girishlade111/ladestack-flashcards",
+    caseStudyUrl: "/work/ladestack-flashcard-engine",
+    tags: ["React", "TypeScript", "IndexedDB", "GSAP"],
+    badge: "ACTIVE DEPLOYMENT",
+    badgeColor: "cyan",
+    telemetry: "OFFLINE PERSISTENCE &bull; 92% RETENTION GAIN"
+  },
+  {
+    id: "prod-03",
+    name: "LadeStack GB Coder",
+    tagline: "Interactive Retro Hardware & WebGL Assembly Engine",
+    description: "Interactive coding suite bridging classic 8-bit embedded hardware architectures and register pipelines with modern browser runtimes.",
+    url: "https://gbcoder.ladestack.in",
+    githubUrl: "https://github.com/girishlade111/ladestack-gbcoder",
+    tags: ["WebGL", "Rust / WASM", "TypeScript", "Canvas"],
+    badge: "IN DEVELOPMENT",
+    badgeColor: "purple",
+    telemetry: "CYCLE-ACCURATE REGISTERS &bull; WASM RUNTIME"
+  },
+  {
+    id: "prod-04",
+    name: "LadeStack Autonomous Orchestrator",
+    tagline: "Resilient Multi-Agent Task Runner & Self-Healing Pipeline",
+    description: "Distributed deterministic task scheduler translating factory safety interlocks into self-healing software pipeline state transitions.",
+    url: "https://orchestrator.ladestack.in",
+    githubUrl: "https://github.com/girishlade111/ladestack-orchestrator",
+    caseStudyUrl: "/work/ladestack-autonomous-orchestrator",
+    tags: ["Rust", "State Machines", "Docker", "DevOps"],
+    badge: "SYSTEMS ARCHIVE",
+    badgeColor: "zinc",
+    telemetry: "ZERO PHANTOM TASKS &bull; DETERMINISTIC RECOVERY"
+  }
+];
+---
+
+<BaseLayout 
+  title="Technical Stack & LadeStack Product Suite — Girish Lade"
+  description="Explore Girish Lade's core engineering skills, runtime technologies, and the LadeStack solo-founder product suite."
+>
+  <!-- Global Fixed Cinematic Visual Effects Overlay -->
+  <CinematicOverlay intensity="light" position="fixed" />
+
+  <div class="stack-page-container relative w-full min-h-[calc(100vh-56px)] bg-[#08090b] text-[#f8fafc] px-4 sm:px-8 py-12 sm:py-16">
+    
+    <!-- Header Section -->
+    <header class="max-w-7xl mx-auto mb-16 sm:mb-20 pt-8">
+      <!-- Camera HUD Breadcrumb -->
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-4">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="font-mono text-xs tracking-widest text-zinc-300 uppercase">
+          INDEX: STACK_001 // SYSTEMS & PRODUCTS
+        </span>
+        <span class="text-zinc-600">|</span>
+        <span class="font-mono text-xs tracking-wider text-amber-300 font-semibold">
+          LOG 04
+        </span>
+      </div>
+
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div>
+          <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight text-white leading-tight">
+            TECHNICAL STACK & <span class="text-amber-400">LADESTACK.</span>
+          </h1>
+          <p class="font-sans font-light text-zinc-300 text-sm sm:text-base md:text-lg max-w-2xl mt-3 leading-relaxed text-balance">
+            Hardware-disciplined software execution. A comprehensive breakdown of core runtime technologies, architecture primitives, and autonomous products built under the LadeStack banner.
+          </p>
+        </div>
+
+        <!-- Telemetry Count Badge -->
+        <div class="font-mono text-xs text-zinc-400 tracking-wider flex flex-wrap items-center gap-2 bg-black/40 px-4 py-2.5 rounded-lg border border-white/10 backdrop-blur-sm self-start lg:self-auto">
+          <span class="text-amber-400 font-bold">[+]</span>
+          <span>14 CORE COMPETENCIES</span>
+          <span class="text-zinc-700">|</span>
+          <span class="text-amber-300">04 LADESTACK MODULES</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN SECTION 1: SKILLS GRID -->
+    <section class="max-w-7xl mx-auto mb-24 sm:mb-32" aria-label="Core Technical Skills">
+      
+      <!-- Section Title HUD -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-10">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded bg-amber-400"></span>
+          <h2 class="font-heading font-bold text-xl sm:text-2xl uppercase tracking-wider text-white">
+            01 // CORE RUNTIME ARCHITECTURE & SKILLS
+          </h2>
+        </div>
+        <span class="font-mono text-xs tracking-widest text-zinc-500 uppercase hidden sm:inline">
+          SVG TELEMETRY // HARDWARE ACCELERATED
+        </span>
+      </div>
+
+      <!-- Categories Container -->
+      <div class="space-y-12 sm:space-y-16">
+        {skillCategories.map((categoryGroup) => (
+          <div class="skill-category-block" data-category={categoryGroup.code}>
+            <!-- Category Header Sub-bar -->
+            <div class="flex items-center gap-2.5 font-mono text-xs tracking-widest text-amber-300/90 mb-6 px-1">
+              <span class="text-zinc-500">[{categoryGroup.code}]</span>
+              <span class="font-semibold uppercase">{categoryGroup.category}</span>
+              <div class="flex-1 h-[1px] bg-white/[0.08] ml-2"></div>
+            </div>
+
+            <!-- Skills Card Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+              {categoryGroup.skills.map((skill) => (
+                <div 
+                  class="skill-card group relative bg-[#0d0f14]/85 backdrop-blur-xl border border-white/10 hover:border-amber-400/50 rounded-xl p-5 sm:p-6 transition-all duration-300 shadow-lg shadow-black/50 hover:shadow-amber-400/5 flex flex-col justify-between"
+                >
+                  <!-- Card Top Row: Icon + Level Badge -->
+                  <div>
+                    <div class="flex items-center justify-between mb-4">
+                      <!-- SVG Icon Frame -->
+                      <div 
+                        class="w-11 h-11 rounded-lg border border-white/15 bg-white/[0.04] group-hover:border-amber-400/60 group-hover:bg-amber-400/10 text-zinc-300 group-hover:text-amber-300 flex items-center justify-center transition-colors"
+                        set:html={skill.icon}
+                      />
+                      
+                      <!-- Level Tag -->
+                      <span class="font-mono text-[10px] tracking-widest px-2.5 py-1 rounded bg-white/[0.03] border border-white/[0.08] text-zinc-400 group-hover:text-amber-300/90 group-hover:border-amber-400/30 transition-colors">
+                        {skill.level}
+                      </span>
+                    </div>
+
+                    <!-- Skill Name -->
+                    <h3 class="font-heading font-bold text-lg text-white group-hover:text-amber-300 transition-colors mb-2">
+                      {skill.name}
+                    </h3>
+
+                    <!-- Description -->
+                    <p class="font-sans font-light text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                      {skill.desc}
+                    </p>
+                  </div>
+
+                  <!-- Card Bottom HUD Reticle Line -->
+                  <div class="pt-4 mt-4 border-t border-white/[0.05] flex items-center justify-between font-mono text-[10px] text-zinc-500">
+                    <span class="flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></span>
+                      <span>PRODUCTION VERIFIED</span>
+                    </span>
+                    <span class="text-zinc-600 font-medium">[+]</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- MAIN SECTION 2: LADESTACK PRODUCT SHOWCASE -->
+    <section class="max-w-7xl mx-auto mb-16 sm:mb-20" aria-label="LadeStack Product Suite">
+      
+      <!-- Section Title HUD -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-white/10 pb-4 mb-10 gap-3">
+        <div>
+          <div class="flex items-center gap-2 font-mono text-xs text-amber-400 tracking-wider mb-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>SOLO FOUNDER VENTURE // PRODUCT ECOSYSTEM</span>
+          </div>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-white">
+            LADESTACK <span class="text-amber-400">PRODUCT SUITE.</span>
+          </h2>
+        </div>
+        
+        <div class="font-mono text-xs text-zinc-400">
+          <a 
+            href="https://ladestack.in" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="hover:text-amber-300 transition-colors flex items-center gap-1.5"
+          >
+            <span>HUB: LADESTACK.IN</span>
+            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        {ladestackProducts.map((prod) => (
+          <article 
+            class="ladestack-card group relative bg-[#0d0f14]/90 backdrop-blur-xl border border-white/15 hover:border-amber-400/60 rounded-2xl p-6 sm:p-8 transition-all duration-300 shadow-2xl shadow-black/70 flex flex-col justify-between"
+          >
+            <div>
+              <!-- Top HUD Bar with Status Badge -->
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-5 border-b border-white/[0.08] pb-4">
+                <!-- Solo Founder Badge (matching hero badge style) -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-[11px] tracking-wider">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span>SOLO FOUNDER @ LADESTACK</span>
+                </div>
+
+                <!-- Product Status Badge -->
+                <span class="font-mono text-[10px] tracking-widest px-2.5 py-1 rounded bg-white/[0.05] border border-white/10 text-zinc-300 font-medium">
+                  {prod.badge}
+                </span>
+              </div>
+
+              <!-- Product Name -->
+              <h3 class="font-heading font-extrabold text-xl sm:text-2xl text-white group-hover:text-amber-300 transition-colors mb-2 tracking-tight">
+                {prod.name}
+              </h3>
+
+              <!-- Tagline -->
+              <p class="font-sans font-medium text-amber-300/85 text-xs sm:text-sm mb-3">
+                {prod.tagline}
+              </p>
+
+              <!-- Description -->
+              <p class="font-sans font-light text-zinc-300 text-sm leading-relaxed mb-6">
+                {prod.description}
+              </p>
+
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 mb-6 font-mono text-[10px] tracking-wider">
+                {prod.tags.map((tag) => (
+                  <span class="px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-zinc-300">
+                    [{tag.toUpperCase()}]
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <!-- Footer Action & External Links Bar -->
+            <div class="pt-5 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+              <!-- Telemetry Info -->
+              <div class="font-mono text-[10px] text-zinc-400 tracking-wider flex items-center gap-1.5">
+                <span class="text-amber-400">[+]</span>
+                <span class="hidden sm:inline">{prod.telemetry}</span>
+              </div>
+
+              <!-- Action Links (HUD Button style) -->
+              <div class="flex items-center gap-2.5">
+                {prod.caseStudyUrl && (
+                  <a 
+                    href={prod.caseStudyUrl}
+                    class="px-3.5 py-1.5 rounded bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/10 font-mono text-xs tracking-wider transition-colors"
+                  >
+                    CASE STUDY
+                  </a>
+                )}
+
+                {prod.githubUrl && (
+                  <a 
+                    href={prod.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-3.5 py-1.5 rounded bg-white/[0.04] hover:bg-white/[0.08] text-zinc-300 hover:text-white border border-white/10 font-mono text-xs tracking-wider transition-colors flex items-center gap-1"
+                    aria-label={`GitHub repo for ${prod.name}`}
+                  >
+                    <span>GITHUB</span>
+                    <svg class="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                )}
+
+                <a 
+                  href={prod.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-4 py-1.5 rounded bg-amber-400 hover:bg-amber-300 text-zinc-950 font-heading font-semibold text-xs tracking-wider transition-colors flex items-center gap-1.5 shadow-md shadow-amber-400/10"
+                  aria-label={`Launch ${prod.name} website`}
+                >
+                  <span>LAUNCH</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+    </section>
+
+    <!-- Bottom Navigation Footer Strip -->
+    <footer class="max-w-7xl mx-auto border-t border-white/10 pt-10 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-400">
+      <a 
+        href="/work" 
+        class="hover:text-white transition-colors flex items-center gap-2"
+      >
+        <span>[←] EXPLORE WORK ARCHIVES</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <a 
+          href="/about" 
+          class="hover:text-amber-300 transition-colors"
+        >
+          READ ABOUT NARRATIVE [→]
+        </a>
+      </div>
+    </footer>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .skill-card {
+    will-change: transform, opacity;
+  }
+
+  .ladestack-card {
+    will-change: transform, box-shadow;
+  }
+</style>
+
+<!-- Client Script: GSAP Stagger ScrollTrigger Animation with Lifecycle Cleanup -->
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  let stackTriggers: ScrollTrigger[] = [];
+
+  export function cleanupStackAnimations() {
+    if (stackTriggers && stackTriggers.length > 0) {
+      stackTriggers.forEach((trigger) => {
+        try {
+          trigger.kill();
+        } catch (e) {
+          console.warn('ScrollTrigger cleanup error:', e);
+        }
+      });
+      stackTriggers = [];
+    }
+  }
+
+  export function initStackAnimations() {
+    cleanupStackAnimations();
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const skillCategoryBlocks = document.querySelectorAll('.skill-category-block');
+    const productCards = document.querySelectorAll('.ladestack-card');
+
+    if (prefersReducedMotion) {
+      gsap.set(['.skill-card', '.ladestack-card'], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      });
+      return;
+    }
+
+    // 1. Stagger reveal skill cards per category as they enter viewport
+    skillCategoryBlocks.forEach((block) => {
+      const cards = block.querySelectorAll('.skill-card');
+      if (cards.length === 0) return;
+
+      const trigger = ScrollTrigger.create({
+        trigger: block,
+        start: 'top 85%',
+        once: true,
+        animation: gsap.fromTo(
+          cards,
+          { opacity: 0, y: 30, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.06,
+            ease: 'power2.out',
+          }
+        ),
+      });
+      stackTriggers.push(trigger);
+    });
+
+    // 2. Stagger reveal LadeStack product showcase cards
+    if (productCards.length > 0) {
+      const prodTrigger = ScrollTrigger.create({
+        trigger: '.ladestack-card',
+        start: 'top 85%',
+        once: true,
+        animation: gsap.fromTo(
+          productCards,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: 'power2.out',
+          }
+        ),
+      });
+      stackTriggers.push(prodTrigger);
+    }
+  }
+
+  // Execution hooks
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStackAnimations);
+  } else {
+    initStackAnimations();
+  }
+
+  document.addEventListener('astro:page-load', initStackAnimations);
+  window.addEventListener('beforeunload', cleanupStackAnimations);
+</script>
