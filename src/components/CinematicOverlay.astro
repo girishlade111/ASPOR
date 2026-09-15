@@ -1,0 +1,246 @@
+---
+// CinematicOverlay.astro
+// Reusable cinematic visual identity component:
+// 1. GPU-cheap animated film grain
+// 2. Anamorphic edge vignette
+// 3. Drifting amber/orange light leaks / film burn
+
+interface Props {
+  intensity?: 'light' | 'heavy';
+  position?: 'absolute' | 'fixed';
+  showGrain?: boolean;
+  showVignette?: boolean;
+  showLightLeaks?: boolean;
+  class?: string;
+}
+
+const {
+  intensity = 'heavy',
+  position = 'absolute',
+  showGrain = true,
+  showVignette = true,
+  showLightLeaks = true,
+  class: customClass = '',
+} = Astro.props;
+
+const isHeavy = intensity === 'heavy';
+---
+
+<div 
+  class:list={[
+    position === 'fixed' ? 'fixed' : 'absolute',
+    'inset-0 w-full h-full pointer-events-none select-none overflow-hidden z-10',
+    customClass
+  ]}
+  aria-hidden="true"
+  data-cinematic-overlay
+  data-intensity={intensity}
+>
+  {/* Layer 1: Drifting Amber / Orange Light Leaks & Film Burn */}
+  {showLightLeaks && (
+    <div class:list={['cinematic-leaks-layer absolute inset-0 w-full h-full', isHeavy ? 'opacity-85' : 'opacity-40']}>
+      <!-- Top-Left Warm Amber Leak -->
+      <div class="cinematic-leak leak-amber-primary"></div>
+      <!-- Bottom-Right Golden Orange Flare -->
+      <div class="cinematic-leak leak-orange-secondary"></div>
+      <!-- Floating Accent Streak -->
+      <div class="cinematic-leak leak-streak-accent"></div>
+    </div>
+  )}
+
+  {/* Layer 2: Anamorphic Vignette */}
+  {showVignette && (
+    <div 
+      class:list={[
+        'cinematic-vignette-layer absolute inset-0 w-full h-full',
+        isHeavy ? 'opacity-90' : 'opacity-50'
+      ]}
+    ></div>
+  )}
+
+  {/* Layer 3: GPU-cheap Animated Film Grain Texture */}
+  {showGrain && (
+    <div 
+      class:list={[
+        'cinematic-grain-layer',
+        isHeavy ? 'opacity-35' : 'opacity-18'
+      ]}
+    ></div>
+  )}
+</div>
+
+<style>
+  /* Base Container Safety */
+  [data-cinematic-overlay] {
+    contain: layout paint;
+  }
+
+  /* Layer 1: Drifting Light Leaks */
+  .cinematic-leaks-layer {
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .cinematic-leak {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+
+  /* Leak 1: Primary Warm Amber (#f59e0b / #d97706) */
+  .leak-amber-primary {
+    top: -15%;
+    left: -10%;
+    width: 65vw;
+    height: 65vh;
+    max-width: 750px;
+    max-height: 750px;
+    background: radial-gradient(
+      circle at center,
+      rgba(245, 158, 11, 0.42) 0%,
+      rgba(217, 119, 6, 0.24) 40%,
+      rgba(180, 83, 9, 0.10) 65%,
+      transparent 80%
+    );
+    animation: leak-drift-amber 22s ease-in-out infinite alternate;
+  }
+
+  /* Leak 2: Golden Orange Burn (#ea580c / #fbbf24) */
+  .leak-orange-secondary {
+    bottom: -20%;
+    right: -10%;
+    width: 60vw;
+    height: 60vh;
+    max-width: 700px;
+    max-height: 700px;
+    background: radial-gradient(
+      circle at center,
+      rgba(234, 88, 12, 0.38) 0%,
+      rgba(251, 191, 36, 0.22) 38%,
+      rgba(245, 158, 11, 0.08) 65%,
+      transparent 80%
+    );
+    animation: leak-drift-orange 26s ease-in-out infinite alternate-reverse;
+  }
+
+  /* Leak 3: Dynamic Anamorphic Streak Accent */
+  .leak-streak-accent {
+    top: 35%;
+    right: 15%;
+    width: 45vw;
+    height: 35vh;
+    max-width: 500px;
+    max-height: 400px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(251, 191, 36, 0.28) 0%,
+      rgba(217, 119, 6, 0.14) 45%,
+      transparent 75%
+    );
+    animation: leak-drift-streak 18s ease-in-out infinite alternate;
+  }
+
+  /* Drift Animations */
+  @keyframes leak-drift-amber {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translate3d(8vw, 10vh, 0) scale(1.12);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(3vw, 18vh, 0) scale(0.95);
+      opacity: 0.75;
+    }
+  }
+
+  @keyframes leak-drift-orange {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 0.85;
+    }
+    50% {
+      transform: translate3d(-10vw, -8vh, 0) scale(1.15);
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(-5vw, -14vh, 0) scale(0.92);
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes leak-drift-streak {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.9) rotate(0deg);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate3d(-6vw, 8vh, 0) scale(1.2) rotate(6deg);
+      opacity: 0.85;
+    }
+    100% {
+      transform: translate3d(4vw, -6vh, 0) scale(1.05) rotate(-4deg);
+      opacity: 0.6;
+    }
+  }
+
+  /* Layer 2: Anamorphic Edge Vignette */
+  .cinematic-vignette-layer {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 38%,
+      rgba(8, 9, 11, 0.45) 72%,
+      rgba(4, 5, 7, 0.88) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Layer 3: GPU-cheap Animated Film Grain */
+  .cinematic-grain-layer {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: grain-jitter 0.75s steps(4) infinite;
+    will-change: transform;
+  }
+
+  @keyframes grain-jitter {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    25% {
+      transform: translate3d(-2%, -3%, 0);
+    }
+    50% {
+      transform: translate3d(3%, 1%, 0);
+    }
+    75% {
+      transform: translate3d(-1%, 2%, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* Reduced Motion Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .cinematic-leak {
+      animation: none !important;
+    }
+    .cinematic-grain-layer {
+      animation: none !important;
+    }
+  }
+</style>

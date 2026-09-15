@@ -1,5 +1,6 @@
 ---
 // Hero.astro - Fullscreen Cinematic Video Hero with GSAP SplitText Reveal
+import CinematicOverlay from './CinematicOverlay.astro';
 ---
 
 <section 
@@ -35,6 +36,9 @@
     <div class="absolute inset-0 bg-gradient-to-t from-[#08090b] via-[#08090b]/65 to-[#08090b]/85 pointer-events-none"></div>
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(8,9,11,0.2)_0%,rgba(8,9,11,0.8)_85%,#08090b_100%)] pointer-events-none"></div>
   </div>
+
+  <!-- Reusable Cinematic Visual Effects Overlay (Grain, Vignette, Amber Light Leaks) -->
+  <CinematicOverlay intensity="heavy" />
 
   <!-- Camera Viewfinder / HUD Reticles (Documentary framing elements) -->
   <div class="absolute inset-6 sm:inset-10 pointer-events-none z-20 flex flex-col justify-between" aria-hidden="true">
