@@ -1,0 +1,309 @@
+---
+// work.astro - Cinematic Projects Index Grid with Hover Video Previews
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CinematicOverlay from '../components/CinematicOverlay.astro';
+import { getAllProjects } from '../utils/projects';
+
+const projects = await getAllProjects();
+---
+
+<BaseLayout 
+  title="Work & Engineering Archives — Girish Lade | Founder @ LadeStack"
+  description="Curated engineering case studies, autonomous developer tools, and resilient software architectures by Girish Lade."
+>
+  <!-- Global Fixed Cinematic Visual Effects Overlay (Light intensity for maximum card readability) -->
+  <CinematicOverlay intensity="light" position="fixed" />
+
+  <div class="work-page-container relative w-full min-h-[calc(100vh-56px)] bg-[#08090b] text-[#f8fafc] px-4 sm:px-8 py-12 sm:py-16">
+    
+    <!-- Header Section -->
+    <header class="max-w-7xl mx-auto mb-12 sm:mb-16 pt-8">
+      <!-- Camera HUD Breadcrumb -->
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md mb-4">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="font-mono text-xs tracking-widest text-zinc-300 uppercase">
+          INDEX: WORK_001 // PRODUCTION ARCHIVES
+        </span>
+        <span class="text-zinc-600">|</span>
+        <span class="font-mono text-xs tracking-wider text-amber-300 font-semibold">
+          LOG 03
+        </span>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white leading-tight">
+            ENGINEERING <span class="text-amber-400">ARCHIVES.</span>
+          </h1>
+          <p class="font-sans font-light text-zinc-400 text-sm sm:text-base max-w-2xl mt-2 leading-relaxed">
+            Autonomous tooling, distributed systems architectures, and high-performance web runtimes engineered with mechanical precision.
+          </p>
+        </div>
+
+        <!-- Telemetry Count Badge -->
+        <div class="font-mono text-xs text-zinc-500 tracking-wider flex items-center gap-2 bg-black/40 px-3.5 py-2 rounded border border-white/5 backdrop-blur-sm self-start md:self-auto">
+          <span class="text-amber-400 font-bold">[+]</span>
+          <span>INDEXED: {projects.length.toString().padStart(2, '0')} MODULES</span>
+          <span class="text-zinc-700">|</span>
+          <span>HOVER FOR PREVIEW</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Projects Grid Container -->
+    <main class="max-w-7xl mx-auto">
+      {projects.length === 0 ? (
+        <!-- Clean Empty State Placeholder -->
+        <div class="empty-state-card relative z-10 w-full py-24 px-6 text-center rounded-2xl border border-white/10 bg-[#0d0f14]/60 backdrop-blur-xl flex flex-col items-center justify-center">
+          <div class="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 flex items-center justify-center text-amber-400 font-mono text-base mb-4">
+            [00]
+          </div>
+          <h2 class="font-display font-bold text-xl uppercase tracking-tight text-white mb-2">
+            NO ARCHIVED CASE STUDIES CURRENTLY INDEXED
+          </h2>
+          <p class="font-sans font-light text-zinc-400 text-sm max-w-md mx-auto leading-relaxed mb-6">
+            Production case studies are undergoing release classification. Check back shortly for updated project telemetry.
+          </p>
+          <a 
+            href="/" 
+            class="px-5 py-2.5 rounded bg-white text-zinc-950 font-heading font-semibold text-xs tracking-wider hover:bg-amber-300 transition-colors"
+          >
+            RETURN TO HERO
+          </a>
+        </div>
+      ) : (
+        <!-- Responsive 3-Column Grid (1 col mobile, 2 cols tablet, 3 cols desktop) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {projects.map((project) => (
+            <article 
+              class="project-card group relative flex flex-col bg-[#0d0f14]/85 backdrop-blur-xl border border-white/10 hover:border-amber-400/50 rounded-xl overflow-hidden transition-colors duration-500 shadow-xl shadow-black/60"
+              data-slug={project.data.slug}
+              data-has-video={Boolean(project.data.previewVideo) ? "true" : "false"}
+            >
+              <!-- Card Header HUD Telemetry Bar -->
+              <div class="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.08] bg-white/[0.02] font-mono text-[10px] tracking-wider text-zinc-500">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-amber-400 font-semibold">[+]</span>
+                  <span class="text-zinc-400">ARCHIVE // {project.data.slug.toUpperCase()}</span>
+                </div>
+                <span class="text-amber-300/90 font-mono font-medium">0{project.data.order ?? 9}</span>
+              </div>
+
+              <!-- Media Container: Thumbnail Image + Looping Video Preview -->
+              <a 
+                href={`/work/${project.data.slug}`} 
+                class="project-media-wrapper relative aspect-video w-full overflow-hidden bg-black block cursor-pointer"
+                aria-label={`Open case study: ${project.data.title}`}
+              >
+                <!-- Stable Flip identifier container for future GSAP Flip transitions -->
+                <div 
+                  id={`project-thumb-${project.data.slug}`}
+                  class="project-flip-thumb relative w-full h-full"
+                  data-flip-id={`thumb-${project.data.slug}`}
+                >
+                  <!-- Base High-Res Thumbnail Image -->
+                  <img 
+                    src={project.data.thumbnailImage} 
+                    alt={project.data.title}
+                    class="project-thumb-img w-full h-full object-cover object-center filter grayscale-[30%] contrast-[115%] brightness-[85%] transition-all duration-700 group-hover:filter-none"
+                    loading="lazy"
+                  />
+
+                  <!-- Hover Looping Video Element (if available) -->
+                  {project.data.previewVideo && (
+                    <video 
+                      class="project-hover-video absolute inset-0 w-full h-full object-cover object-center opacity-0 pointer-events-none transition-opacity duration-500 filter contrast-[110%] brightness-[90%]"
+                      muted
+                      loop
+                      playsinline
+                      preload="none"
+                      data-video-src={project.data.previewVideo}
+                    >
+                      <source src={project.data.previewVideo} type="video/mp4" />
+                    </video>
+                  )}
+
+                  <!-- Cinematic Vignette Gradient Over Thumbnail -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#0d0f14] via-transparent to-transparent opacity-85 pointer-events-none"></div>
+
+                  <!-- Hover HUD Tag -->
+                  <div class="absolute bottom-2.5 right-3 font-mono text-[9px] tracking-widest px-2 py-0.5 rounded bg-black/75 border border-white/10 text-zinc-400 flex items-center gap-1.5 backdrop-blur-sm pointer-events-none group-hover:text-amber-300 group-hover:border-amber-400/40 transition-colors">
+                    {project.data.previewVideo ? (
+                      <>
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:animate-pulse"></span>
+                        <span>PREVIEW [REC]</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>FRAME [35MM]</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </a>
+
+              <!-- Card Content Body -->
+              <div class="flex-1 flex flex-col p-5 sm:p-6 justify-between">
+                <div>
+                  <!-- Monospace Tech Stack Badges: [ASTRO] [GSAP] [TS] -->
+                  <div class="flex flex-wrap gap-1.5 mb-3 font-mono text-[10px] tracking-wider">
+                    {project.data.tags.map((tag) => (
+                      <span class="px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-amber-300/90">
+                        [{tag.toUpperCase()}]
+                      </span>
+                    ))}
+                  </div>
+
+                  <!-- Project Title -->
+                  <h2 class="font-heading font-bold text-lg sm:text-xl text-white group-hover:text-amber-300 transition-colors mb-2 tracking-tight">
+                    <a href={`/work/${project.data.slug}`}>
+                      {project.data.title}
+                    </a>
+                  </h2>
+
+                  <!-- One-Line Summary -->
+                  <p class="font-sans font-light text-zinc-400 text-xs sm:text-sm leading-relaxed mb-4 text-balance">
+                    {project.data.summary}
+                  </p>
+                </div>
+
+                <!-- Footer Action Bar -->
+                <div class="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono">
+                  <a 
+                    href={`/work/${project.data.slug}`} 
+                    class="text-zinc-300 group-hover:text-amber-400 transition-colors flex items-center gap-1.5 tracking-wider font-medium"
+                  >
+                    <span>CASE STUDY</span>
+                    <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+
+                  {project.data.githubUrl && (
+                    <a 
+                      href={project.data.githubUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="text-zinc-500 hover:text-white transition-colors"
+                      title="View GitHub Repository"
+                      aria-label={`GitHub repository for ${project.data.title}`}
+                    >
+                      [GITHUB]
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </main>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .project-card {
+    will-change: transform, box-shadow;
+    transform-style: preserve-3d;
+  }
+
+  .project-thumb-img {
+    will-change: transform, filter;
+  }
+</style>
+
+<!-- Client Script: GSAP Intentional Hover Interaction & Video Preview -->
+<script>
+  import { gsap } from 'gsap';
+
+  function initWorkCards() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cards = document.querySelectorAll('.project-card');
+
+    cards.forEach((card) => {
+      const video = card.querySelector('.project-hover-video') as HTMLVideoElement | null;
+      const thumbImg = card.querySelector('.project-thumb-img') as HTMLImageElement | null;
+      const hasVideo = card.getAttribute('data-has-video') === 'true';
+
+      // Desktop Hover Enter
+      card.addEventListener('pointerenter', () => {
+        if (prefersReducedMotion) return;
+
+        // Intentional cinematic lift & warm glow
+        gsap.to(card, {
+          y: -6,
+          scale: 1.015,
+          boxShadow: '0 20px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.15)',
+          duration: 0.35,
+          ease: 'power2.out',
+        });
+
+        // If card has preview video: play and fade in
+        if (hasVideo && video) {
+          video.play().then(() => {
+            gsap.to(video, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+          }).catch(() => {
+            // Autoplay rejected or waiting for user interaction fallback
+            if (thumbImg) {
+              gsap.to(thumbImg, { scale: 1.06, filter: 'grayscale(0%) contrast(120%) brightness(100%)', duration: 0.4 });
+            }
+          });
+        } else if (thumbImg) {
+          // Fallback subtle zoom & contrast boost
+          gsap.to(thumbImg, {
+            scale: 1.06,
+            filter: 'grayscale(0%) contrast(120%) brightness(100%)',
+            duration: 0.4,
+            ease: 'power2.out',
+          });
+        }
+      });
+
+      // Desktop Hover Leave
+      card.addEventListener('pointerleave', () => {
+        if (prefersReducedMotion) return;
+
+        // Reset card lift
+        gsap.to(card, {
+          y: 0,
+          scale: 1,
+          boxShadow: '0 10px 20px -5px rgba(0, 0, 0, 0.6), 0 0 0px rgba(0, 0, 0, 0)',
+          duration: 0.35,
+          ease: 'power2.out',
+        });
+
+        // If card has preview video: fade out, pause and rewind
+        if (hasVideo && video) {
+          gsap.to(video, {
+            opacity: 0,
+            duration: 0.3,
+            ease: 'power2.out',
+            onComplete: () => {
+              video.pause();
+              video.currentTime = 0;
+            },
+          });
+        }
+
+        if (thumbImg) {
+          gsap.to(thumbImg, {
+            scale: 1,
+            filter: 'grayscale(30%) contrast(115%) brightness(85%)',
+            duration: 0.4,
+            ease: 'power2.out',
+          });
+        }
+      });
+    });
+  }
+
+  // Run on initial load and on Astro page transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWorkCards);
+  } else {
+    initWorkCards();
+  }
+
+  document.addEventListener('astro:page-load', initWorkCards);
+</script>
