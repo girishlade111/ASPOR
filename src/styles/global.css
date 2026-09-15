@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-obsidian: #08090b;
+    --bg-surface: #0f1115;
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-highlight: rgba(255, 255, 255, 0.18);
+    --text-pure: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --accent-amber: #e5a93c;
+    --accent-cyan: #38bdf8;
+    --letterbox-height: 28px;
+  }
+
+  html {
+    background-color: var(--bg-obsidian);
+    color: var(--text-pure);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--bg-obsidian);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Custom Selection */
+  ::selection {
+    background: rgba(229, 169, 60, 0.35);
+    color: #ffffff;
+  }
+}
+
+/* Typography Helpers */
+.font-display {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-heading {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Film Grain Texture */
+.film-grain {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.65;
+  mix-blend-mode: overlay;
+  will-change: transform;
+}
+
+/* Anamorphic Lens Vignette */
+.cinematic-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9980;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 45%,
+    rgba(8, 9, 11, 0.45) 80%,
+    rgba(4, 5, 7, 0.85) 100%
+  );
+}
+
+/* Anamorphic Letterbox Matte Bars */
+.letterbox-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: var(--letterbox-height);
+  background-color: #040405;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #52525b;
+  user-select: none;
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+.letterbox-top {
+  top: 0;
+  border-bottom-width: 1px;
+}
+
+.letterbox-bottom {
+  bottom: 0;
+  border-top-width: 1px;
+}
+
+/* Recording Pulse Indicator */
+.rec-pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #ef4444;
+  margin-right: 6px;
+  box-shadow: 0 0 8px #ef4444;
+  animation: rec-blink 1.8s ease-in-out infinite;
+}
+
+@keyframes rec-blink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+}
+
+/* Documentary Reticle Marks */
+.reticle-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+/* Reduced Motion Graceful Degradation */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .film-grain {
+    display: none;
+  }
+}
+
+/* Subtle Glowing Shimmer */
+.shimmer-text {
+  background: linear-gradient(
+    110deg,
+    #ffffff 20%,
+    #fef08a 45%,
+    #ffffff 70%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
