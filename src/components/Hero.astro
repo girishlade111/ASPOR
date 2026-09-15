@@ -22,13 +22,16 @@ import CinematicOverlay from './CinematicOverlay.astro';
     <video
       id="hero-video"
       class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-1000 scale-105 filter grayscale-[80%] contrast-[130%] brightness-[38%]"
+      width="1280"
+      height="720"
       autoplay
       muted
       loop
       playsinline
-      preload="metadata"
+      preload="auto"
       poster="/assets/hero/poster.jpg"
     >
+      <source src="/assets/hero/hero-reel.webm" type="video/webm" />
       <source src="/assets/hero/hero-reel.mp4" type="video/mp4" />
     </video>
 
